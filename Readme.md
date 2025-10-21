@@ -2,12 +2,6 @@
 
 # Research and Ideas Before Interview
 
-#### Student End
-
-#### Teacher End
-
-#### Planned Questions
-
 
 
 # Interview
