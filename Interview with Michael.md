@@ -1,135 +1,125 @@
-(Transcribed by TurboScribe.ai. Go Unlimited to remove this message.)
 
-[Speaker 2]
+##### Dexter
 My idea again, um, I believe it was So, how is What do you want me to do what what is your concept concept?
 
-[Speaker 1]
+##### Michael
 I've got a big picture and I understand this may be too big and beyond the scope of What your company is able to achieve and possibly not what the assignment whatever Paraphrase how you see fit Essentially We've got an assessment column so students can track what's due and when it's due. However, that requires some staff and What I would like to streamline that process for staff to make it easier for them to be able to get the details in I would like staff to be able to Have consistent naming of courses and we can extract that information from our databases and so whether it's drop downs or Predictive text or whatever is appropriate. Whatever's gonna be easy for users Essentially, I want something easy for users to put the course details in identify their subject identify assessments.
 
 They've got And when they're due and this is information, they've already got to put into the system. Okay, and so I'd like that Yeah, it's either be extracted from that system or I'd like it so they can interpret in a consistent way Okay, so I can spell things correctly Capitals are correct the structure is the same so everyone's calling it maths rather than some mathematics or whatever the case may be Once that's in there or one with that. I also want teachers to be able to go Damn it, there's Five other assessments due that day and particularly from a maths point of view physics and chemistry are also due at the same time I'm not gonna have maths due because chances are I've got a bit of overlap with my kids And so I want teachers to have that ability to see what's already been included Possible so they can make some informed decisions Spread things around and then After the teachers have been able to do that, I want students to be able to very easily get their own personal Having a big giant line and they've got to work out where this stuff is and go through it Potentially miss something if they can enter their name student number and then it just goes This is your assessment calendar for this semester If possible they can change views of I want to know just what my maths is due In chronological order when things are due, that would be lovely if students can have that level of freedom
 
-[Speaker 2]
+##### Dexter
 Okay, a lot of that seems doable Has any of this changed since the BSSS update is any of these I Like student portal side or is there anything on the teacher portal side that
 
-[Speaker 1]
+##### Michael
 Once I mean the reality is yeah Yeah Accessing that, you know fire a website Logins that are kind of annoying or not if there was a system that talk to each other And maybe pushed out updates or something Yeah, it's been updated I get the teacher changes something for whatever reason It'd be nice for a student to get a notification of that as well Rather than relying on teachers to actually say something or forgetting to do it Okay Because basically you can change out of the system and not tell the students and then Because there is currently no way to notify students. This is finally been updated and this is the most current version Okay, so that I do like that feature of what an app could possibly do
 
-[Speaker 2]
+##### Dexter
 Yeah On the on the teacher side, is that the thing that you're most Wanting fixed or
 
-[Speaker 1]
+##### Michael
 Yes, and no, I mean I've got those two hats I see it as Don't necessarily pay attention to where my other assessments already on so that easy for them to say that would be great It's also a bit of extra workload It's quite a lot of extra workload people have to type everything in In a way Utilizing that down to a predictive text and there was that consistency that would help It look nicer. It also makes quicker and easier for teachers. So that was that's the drive just to make it quicker and easier for stuff But it's also about having consistency for students in an easy way Students to be able to have this I Check it It's not easy to check unless you've got that website saved and Your password saved which you have to re-enter half the time and then when they do update the password doesn't go away so I think their system would be clunky and While the progress online serves a purpose for seeing assessment results, I think it serves that function Relatively well Often I think for an assessment calendar you do want to kind of check more frequently
 
-[Speaker 2]
+##### Dexter
 With The app so is this something That teachers would have downloaded and it would then connect to all the other teachers or would it then Preferably would it connect to all the
 
-[Speaker 1]
+##### Michael
 Yeah, I mean that would that would be lovely to sort of have and whether it's Yeah, if teachers can say well, here's what the calendar currently is And now go put your own in or as they start to put their own in They can be saying there are three hour assessments due this day. Do you still want to have this date? That'd be good too And I don't know if which way around it needs to go Obviously, we've got to put do our inputs into ACS, which is our our database system Where we need to create?
 
 assessment We've got to type all that in so it could be typed in there and then extracted but I want staff to be able to see What they're typing in to begin with That date already clashes. So don't do that So I don't know how the timing that works if they do that first or if they work in the app Maybe they do need to keep them separate of this is what I put in the portal Yeah, maybe they do need to be two different workloads Which is hence the reason to because we need a school-based calendar We need a school-based system for staff on-site here to go focus over sighted or everything And students don't focus sighted Yep, here's all my stuff that affects me So maybe they do for teachers do need to remain two separate things one for the ACS one for the school-based Calendar and making sure things don't clash So maybe yeah, maybe we can't necessarily extract the information from ACS, but they just work in the app
 
-[Speaker 2]
+##### Dexter
 I Think I have a good idea what you're wanting so Teachers conflict see the conflicting stuff be able to enter streamline not Too much ability for mistakes to be entered and then that to be uploaded for students to see Um
 
-[Speaker 1]
+##### Michael
 Yeah, I mean to add a layer of complexity If we do extract what they put in this yes, these match that of course or hang on Yes, yes portal Somebody or individual teacher They don't align That'd be nice too Because that does happen But I'll change one and not change the other forget
 
-[Speaker 2]
+##### Dexter
 Would Thing way It's the the first thing and then it uploads to these things the Bible or With how ACS works and all the other things you do with that
 
-[Speaker 1]
+##### Michael
 Well what I could what I can do without because it doesn't reach Privacy of student details. I can show you what it looks like Yes, it's all we have to do in that system and how it generates it If that would help Visualize and formulate and go.
 
 Oh, no, that's a completely separate system. I can do it. That's rubbish.
 
 We can't do that Okay. Now I see what you've got to do so we can I can
 
-[Speaker 2]
+##### Dexter
 Show you that now Yeah, that could be good maybe now Yeah It would definitely help to see what I can deal with yeah
 
-[Speaker 1]
+##### Michael
 Before I get my computer I'll go in and log in
 
-[Speaker 2]
+##### Dexter
 I
 
-[Speaker 1]
+##### Michael
 Was Just ask questions or if there's certain screenshots if they're appropriate I can take those So you can make this image
 
-[Speaker 2]
+##### Dexter
 So With usability, I'm pretty sure in the last interview we had you talked a lot about drop-downs and so that People could only enter what they needed to Is that still?
 
-[Speaker 1]
+##### Michael
 yeah, I mean I know that I can extract this in a lot of this information With the system and as a CSV file, I know that I can easily adapt it and create drop-downs and look-up tables from an Excel spreadsheet perspective So that's why I'm thinking drop-downs and it's a bit of a speed to select what you want And then once you've selected that the next one becomes easier to select But there could be a better way. I don't know if predict detect is a better way And it does the drop-down for you. I don't know It's It's all about the user usability I think that's definitely Do you have one of the ones where it stops you from seeing from an angle?
 
 I Know my books. I'm not essentially a teacher has to create a mock book first And that this is effectively what my book is This information is what we have to create Once you my books created I Have to enter the name of whatever the assessment is I can then say what it's out of and I sign the waiting and then I Save all the information. Okay, that's where we do it in the market This connects to another system There are And so I didn't need to find my unit out So these are just all the ones for school.
 
 I go into our course Which is us and Using that information I put into the mock book this gets automatically generated. Okay, that's already system These are all the Australian curriculum things that are part of that first five million pages But the bit that's useful is this stuff here is automatically generated from my mark book I mentioned I get whatever I've been to the mark book will turn up here and then I need to This page put in my dates, but when it's due when it's happening, there's any description like for an assignment Oh Now once I've done this and published this document, that's when it becomes available Okay For a school to have a school-based car Moment with an Excel spreadsheet What was there previously which was Which means the assessment names don't always line up sometimes people write the wrong percentage the dates they put in that calendar different this one When they name their course somebody will call it math methods. Somebody else will call it mathematical applications some people Course names wrong All of those sorts of details So missing and there's that double handling of the data One of the things we can do Reports There's one of these reports where we can actually extract the unit outline details
 
-[Speaker 2]
+##### Dexter
 So After this point is this locked in If you publish it you can't make any changes
 
-[Speaker 1]
+##### Michael
 Okay, so effectively what happens is let's say I will change this aspect I will need to unpublish my Thing I can then edit it in that Do I have to save it again? I then publish it again. I didn't have to download the new one.
 
 This is a PDF I don't have to upload the new PDF into school box I didn't have to go back to the school calendar and I also have to update that So there's a lot of work that goes into changing a date I don't want to as much as possible trying to streamline because if students are gonna have then we don't need to update a school box Update even the live document Problematic because Okay, and it's not as usable I don't think having an Excel file It's multiple clicks Open get your website up then go to school box then find the calendar Yeah, it's a whole and it's got everybody's details Personally I really want students in their own personal calendar.
 
-[Speaker 2]
+##### Dexter
 I can easy Okay If that computer eventually loads up I can show you what features that are effectively typing into Okay, um we've That how students get it will It has a list it has their classes They select themselves and then it downloads it and then Displays the calendar just themselves. Yeah, that's what you want, correct? Yeah This is my stuff Okay, and We've what is downloadable from ACS is a formula.
 
 Yeah. Yep. ACS does that have What information does it download again?
 
-[Speaker 1]
+##### Michael
 It was download some key information But it I'd have to check with the report doesn't help with the most recent updates, but it doesn't download Okay, it used to download the assessment names within the unit.
 
-[Speaker 2]
+##### Dexter
 So you at least have all of those details Yeah, it wasn't as useful for the due date Okay Yeah, maybe not be Useful yeah, because I was thinking every Tool for the teachers where they can Choose dates and all that make sure it doesn't inflict then they upload to ACS that Was a CSV file or whatever. It was downloaded. It was then uploaded to the student side they And that extracted all the information there And then the students could pick their classes or Show it but yeah, it's a bit weird Is that the only thing that can be extracted from there Oh Is that still thinking about loading Does the windows key work?
 
-[Speaker 1]
+##### Michael
 Yeah, so with with the IP I mean I Understand that If we if we could just get usable student-friendly Calendar where they can find all these personal details and if teachers still need to create something in an Excel spreadsheet and do the double handling so be it but Even though maybe not necessarily part of the app. It's a file that is the back-end data for the app If there is a way to make that better than what it currently is. I'm not going to try to show you what it currently is but it's effectively just Whether it's an Excel document or it's a Word document, it currently is just a giant table People just go Somebody else is doing something that day.
 
 So I'll do an assignment to you Yeah, the week after. Okay. Yeah, that's as much people have to put in Their subject name which assessment it is what the percentage is and teachers don't always put the details in So if that was just an Excel spreadsheet with drop-downs or predictive text, there was a better way to get all that information in for the teachers to see, but then that feeds into a readability feature for students, then I don't know if that still meets enough of the need for your project?
 
-[Speaker 2]
+##### Dexter
 You probably would but stuff that Is a bit clunky so Um If I Could only deliver one of these parts and then maybe possibly do one of like a new service or something later Would that Be beneficial for? Yeah, any one of those parts would be great
 
-[Speaker 1]
+##### Michael
 Whether it's something that helps The teachers be able to see what's happening and get their data in More efficiently and more accurately Or Or students having Something that's more usable for them And more consistent for them I'm happy with either of those Outcomes Because I understand the scope of combining them Maybe too much It's quite a lot I know it's too much
 
-[Speaker 2]
+##### Dexter
 Yeah With The service The teacher side And Checking Against dates They'll probably have to deal with a Server somewhere And they will That might be a bit more of a Later thing that Probably can't do for this assignment Um If It can just be An uploaded Word doc or the Excel and then I can have an app that extracts That data, displays that to On the student side With just their stuff I think I could probably do that Um And that might mean Changing how It works on the teacher side With the Excel That sounds good actually
 
-[Speaker 1]
+##### Michael
 And I want to change it But I don't know That stuff Okay If this doesn't Load I can always go get my laptop We probably are at that point Yeah Let's see
 
-[Speaker 2]
+##### Dexter
 Okay that's Logging in Maybe it just Never loaded the home screen Possibly No, back to there So someone
 
-[Speaker 1]
+##### Michael
 Let's just sign in Let's go grab the laptop I'll show you
 
-[Speaker 2]
+##### Dexter
 So with that Because I'm Doing an Excel Word doc Visit how to make sure What resources Stuff students need Or is it just the Three day waiting Title
 
-[Speaker 3]
-Hello
-
-[Speaker 4]
-Would
-
-[Speaker 2]
+##### Dexter
 Would Teachers Be open to Having this Excel situation Fixed And have them Enter a lot more information Well something needs to change So
 
-[Speaker 1]
+##### Michael
 While The impetus is effectively Reducing teacher workload Um I can't remember
 
-[Speaker 2]
+##### Dexter
 If it's a word doc Is it Named appropriately or No that would be useful Ah
 
-[Speaker 3]
-Would it Two planner Maybe this one's just mine Nope that one's just mine Okay
-
-[Speaker 1]
+##### Michael
 Senior assessment calendar is appropriately named Oh So This is what it looks like To So, this is what it looks like. So, this is to help students.
 
 My vision was I'll just make a year 11 calendar and a year 12 one. But basically, staff are given just this table of those, that has the week, days, the dates, and any of those key events. So, when we have to have stuff published by VCS for major or close reasons, any major disruptions that are going to see teachers potentially out of the school, or students out of the school.
@@ -152,10 +142,10 @@ I'd like students to go, well, I've got two things due this week. One is a 20% t
 
 Yeah, I want them to have an awareness of how much they're due, as well as when they're due.
 
-[Speaker 2]
+##### Dexter
 So this is it, that's how everything is entered?
 
-[Speaker 1]
+##### Michael
 At the moment, yeah. Okay. If it was left to me as an individual with my limited technology and knowledge and understanding, essentially, I would extract what the list of units being taught are.
 
 I can do that from ACS. And then I would create something of a dropdown so staff could click on a cell and create spaces for only two and maybe three assessment items. But even that is, that's a lot of back-end work for me.
@@ -164,18 +154,18 @@ And if it's a giant dropdown list of the units that are being taught, I mean, ye
 
 Okay.
 
-[Speaker 2]
+##### Dexter
 So if this Excel was changed a bit and in each of the sections, instead of just one field, there were multiple. So let's say the class, the task name, weighting, would that work or is that too much?
 
-[Speaker 1]
+##### Michael
 Yeah, absolutely. And so going on that, let's say for this psychology task, rather than just having this single box where multiple teachers enter multiple bits of data, maybe that actually is six boxes or nine boxes where it's clear a teacher picks their unit, picks their assessment name or types in their assessment name and then selects the percentage. Okay.
 
 And there's only two or three spots for assessment to be due that day and you just can't have more. That would help restrict things as well. So that restriction is something that is wanted?
 
-[Speaker 2]
+##### Dexter
 Yeah, yeah.
 
-[Speaker 1]
+##### Michael
 As a general rule, we don't have three things due on the same day. Okay. That obviously gets a lot trickier in semester two.
 
 Like there are things here. So for year 12, we've got four things due, but three of them are maths and one special. Yeah, so nobody's going to have a double up between these three maths classes.
@@ -188,55 +178,53 @@ Textiles does physics. I think there's only I don't think there's anyone doing d
 
 So I don't know what that looks like in terms of only providing a certain amount of space because we do have special circumstances.
 
-[Speaker 2]
+##### Dexter
 So would providing a suggested limit of like three and then for these special circumstances, allowing one or two more so that people can actually have the amount of assignments necessary.
 
-[Speaker 1]
+##### Michael
 It could do. I mean, are you suggesting visually that like a left to right type thing of visual arts would write all their stuff here? And then just to the right of that, then I was thinking a bit more horizontal instead of vertically.
 
-[Speaker 2]
+##### Dexter
 But that would be good work. It's what do you think would actually work better? Because both could.
 
-[Speaker 1]
+##### Michael
 I don't know. I can't. I'm not very good at picturing this.
 
 That could be part of that process. I mean, ultimately, you need to extract it in a usable way. So if you've got ideas on in a simple sense, like this display, I don't know how much that display influences how you extract information from your app.
 
 So that's on you. If there are restrictions to it, then I don't know. Yeah.
 
-[Speaker 2]
+##### Dexter
 What? Sometimes that could definitely work.
 
-[Speaker 1]
+##### Michael
 Now, I don't know if these need to be combined in some way, but this is the information ultimately. We should have as teachers, we should know that it's mathematical methods. We should know that it's test two.
 
 We should know that test and that it's worth 30 percent. The assessment name for some people might be portfolio. And yeah, the assessment type doesn't always match.
 
 It may not be as useful. And that's ultimately if it's about the students, that's something that you can get more of an insight in. If it's just which unit is it, what's the assessment?
 
-[Speaker 2]
+##### Dexter
 So having a mini table inside the table could definitely work.
 
-[Speaker 1]
+##### Michael
 Yeah, whether it's displayed like that or if it's a long, like that. That's something that can make a difference for teachers. Yeah, teachers are going to work with that, whatever that restriction is.
 
-[Speaker 3]
-That's whatever works better for the app. Extracting details for whatever you've got to do with whatever the programming or coding or whatever.
 
-[Speaker 2]
+##### Dexter
 So here we've only got three pieces of information. I remember when we were originally chatting, and as I've brought up a few times, I believe, what is required for a test, maybe a reference sheet or something like that. Is that information that needs to be displayed?
 
-[Speaker 1]
+##### Michael
 That's something that teachers would know and it's something that I think would be very useful for students. I'd say that's a nice little bonus that we currently don't incorporate in our calendar. So yeah, we could absolutely have another spot where teachers could write a full reference sheet or video.
 
 I don't know what our information is necessarily going to be. I mean, I know my subject areas. I don't know necessarily from other subject areas what students want these days.
 
 And if part of your app design is getting some end user insights.
 
-[Speaker 2]
+##### Dexter
 I probably will also maybe send a poll out to everyone about what information you want.
 
-[Speaker 1]
+##### Michael
 I'm more than happy to be guided by those end user insights as well. Now, I want a product that serves them. If you can justify in your app design why you've put particular things in based on that insight, or we have further conversations to refine that.
 
 If you can tell me, students really want this. And I'm like, no, we're not telling you that. Or, hey, yeah, sure, we can easily provide that information.
@@ -245,10 +233,10 @@ We know that that changes too much. That's not realistic. That's great to know t
 
 Because this does need to be created early in the semester. And there will occasionally be some things that we just can't provide. But something like those resources, I think, is workable.
 
-[Speaker 2]
+##### Dexter
 So, at this point, when this is finished, would it be possible to have, like, say in each of these you have the thing saying task or whatever. And that has a link to the actual task sheet on Scorx or something? Or is that a bit too early in the process?
 
-[Speaker 1]
+##### Michael
 It's too early in the process. Okay. So, when we create the calendar, that's before the assessment's created.
 
 So, yeah. Okay. Because we'll adapt assessment.
@@ -269,58 +257,51 @@ We need to, as in, upload it. We also need to upload it into Schoolbox. So, if i
 
 So, if there is a link to either of those pages, students should be able to then download that work. Okay.
 
-[Speaker 2]
+##### Dexter
 So, I think I've got an idea of what I'm going to do. So, I create the – an Excel sheet that will include these sort of information in a bit more structured way. Yeah.
 
 Then that sheet can be sent out to students and they'll have a copy of my app or the app will be sent out with a copy of this information already built in.
 
-[Speaker 4]
-Yeah.
 
-[Speaker 2]
+##### Dexter
 Which then, when the students run the app, it creates their personalised one, just extracts their stuff, all that. Yeah. Is that – That sounds great.
 
 Great? Okay, cool. And then, is there a possibility of me possibly doing this over the holidays and creating the teacher side, possibly?
 
 Those who are up to – Yes, as a sort of community service or something. Oh, yeah, absolutely. Okay.
 
-[Speaker 1]
+##### Michael
 Yeah. So, if you get – if you're able to develop something else, and that's exactly what I'm after, so that's a much better way of describing what I've taken an hour to do. So, well done.
 
 Is that being recorded? 44 minutes. Okay, we've got confirmation that that's exactly what I'm after.
 
 Like, if that's – and we can use current data or we could use a small set of teachers or we can make a mock one or whatever to help feed into that. And if that's working, then absolutely I would love to explore this community service idea of yours to have something built for next year that we could then fully utilise.
 
-[Speaker 4]
+##### Dexter
 Okay, cool.
 
-[Speaker 1]
+##### Michael
 Yeah, so I think that works. And just remembering that the intellectual property is joint-owned, and so I won't be paying for the use of this.
 
-[Speaker 4]
-Okay, cool.
 
-[Speaker 1]
+##### Michael
 Yeah. Great. I just want to get in on it now.
 
 It's on record. You can charge other people to use it, however. Okay.
 
-[Speaker 2]
+##### Dexter
 So, no charging the school.
 
-[Speaker 1]
+##### Michael
 Other teachers, maybe? Well, technically it also belongs to the school because it's done – even though it's our intellectual property, it belongs to the school because I'm employed by the school, doing a school task in school hours. Even if it was outside of school hours.
 
-[Speaker 4]
-Okay.
-
-[Speaker 1]
+##### Michael
 Yeah.
 
-[Speaker 2]
+##### Dexter
 This is unrelated, but that's something I had a question about for Year 12 Project next year. If I were to create an app or a game or something, school – does it own any of that?
 
-[Speaker 1]
+##### Michael
 No, your stuff is a little different. Okay. If it's completely yours.
 
 So, we currently have a Year 12 student who's done some absolutely amazing work and research to do with the space industry in Australia, and they will be publishing their work. Like, it's that good. Okay.
@@ -333,10 +314,10 @@ Okay. It's different for me because I'm being paid by the school as a teacher, a
 
 This particular aspect of the app falls into that combination. You're creating it, but that original idea comes from the school.
 
-[Speaker 2]
+##### Dexter
 Yeah, okay. That makes sense.
 
-[Speaker 1]
+##### Michael
 Yeah. Cool. Okay.
 
 Which is why if I had, like, a really cool money-spinning idea, we wouldn't do that as part of your assignment because we'd give you that opportunity to have not the grey area, as well as me being able to financially profit too. That'd be, like, outside. Yeah.
@@ -349,22 +330,22 @@ So, if it's a course they're teaching and they're just creating work booklets, b
 
 It's like any of those teachers that create YouTube videos and maybe monetizing it through ads or once you've got a certain number of subscribers or however that works. If it's filming in their classroom and whatnot, then take the school loans and they have to give permission for that to be used and therefore it can't be monetized. But if it's not in their classroom, if they're filming in their own home, if the film is on the weekend, if it's up there, then they can do that.
 
-[Speaker 2]
+##### Dexter
 Okay, that makes sense, yeah. Back to this. Is there anything we haven't talked about that you would like in this?
 
 Oh, any random thing that we forgot to mention or anything like that?
 
-[Speaker 1]
+##### Michael
 Probably, but no, I can't think of anything. That covers getting clear information from teachers. It's really explicit what they have to provide.
 
 If that can be done in an easier way so they don't have to type as much, that would be great. It sounds like it's going to feed into the API design that has that great outcome for students where they can get that personalized information, clear and easy to read. That's everything.
 
 Okay, cool. And happy to be guided by End User Insights and your development as to that interface for teachers, how they provide the information in a good way.
 
-[Speaker 4]
+##### Dexter
 Okay, cool.
 
-[Speaker 1]
+##### Michael
 I think that works. Great, done. Cool.
 
 Thank you.
