@@ -1,8 +1,13 @@
 [package]
-name = "assesCalApp"
+name = "assesmentCalendarApp"
 version = "0.1.0"
 edition = "2024"
+authors = "Dexter Hart"
+description = "App to replace the Senior Assesment Calendar and improve usability."
+documentation = ""
+repository = ""
+licence = ""
+licence-file = ""
 
 [dependencies]
 calamine = "0.31.0"
-iced = "0.13.1"
