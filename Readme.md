@@ -1,24 +1,34 @@
 # Table of Contents
 
-# Research and Ideas Before Interview
-
-
-
 # Interview
+#### Interview and Transcript
 
 #### Interview Notes
+###### Current System 
+###### Desired System
 
 #### Key Ideas
+###### Streamlining Teacher Workflow
+###### Improving Student Access
+###### Data Consistency and Automation
 
 # Preplanning
 
 #### Define the Problems
+###### Inconsistent Naming and Input
+###### Clunky and Redundant Systems
+###### No Communication or Alerts
+###### Assessment Clashes
+###### Poor Usability
 
 #### What problems will I solve 
+###### Teacher Data Entry 
+###### Student Assessment Calendar
+###### Data Standardisation and Accessibility
+###### Ease of Use and Accuracy
 
-#### Feedback from Michael
+#### If I have more time 
 
-#### If I have more time what will I solve next
 
 #### Flow Chart
 
@@ -27,6 +37,12 @@
 
 # Development
 ### Prototype 1: 
+##### Code Snippets
+##### Video of Functionality
+##### Issues
+
+# Reflection
+### Feedback From Michael
 
 
 
