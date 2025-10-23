@@ -35,8 +35,10 @@ class CalendarApp(QMainWindow):
     def __init__(self):
         super(CalendarApp, self).__init__()
 
+        self.setWindowTitle("Assesment Calendar")
+
         self.show()
-        
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
