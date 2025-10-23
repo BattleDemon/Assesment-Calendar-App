@@ -9,9 +9,10 @@ Transcript
 
 #### Interview Notes
 ###### Current System 
-
+Teachers currently have to manually enter assessment data into multiple places like ACS, Schoolbox, and an Excel calendar. This means there’s a lot of double handling and inconsistency between what’s written in each system. Different teachers use different naming styles and formats, so sometimes course titles or task names don’t match. Students also have to dig through clunky portals or shared spreadsheets to see their due dates, and they aren’t notified when things change. Overall, the system is time consuming and hard to use for both teachers and students.
 
 ###### Desired System
+A system that makes entering and viewing assessments simpler for everyone. Teachers should be able to easily add assessments using drop-downs or predictive text so that everything is consistent. It should also show if there are any clashes with other subjects before finalising dates. Students should then be able to access a personalised calendar that only shows their subjects and tasks, ideally in a clean and easy-to-read layout. In the future, it could even notify students when assessment details are updated.
 
 #### Key Ideas
 ###### Streamlining Teacher Workflow

@@ -2,7 +2,7 @@
 name = "assesmentCalendarApp"
 version = "0.1.0"
 edition = "2024"
-authors = "Dexter Hart"
+authors = ["Dexter Hart","DexterH@oranaschool.com"]
 description = "App to replace the Senior Assesment Calendar and improve usability."
 documentation = ""
 repository = ""
@@ -11,3 +11,4 @@ licence-file = ""
 
 [dependencies]
 calamine = "0.31.0"
+slint = "1.14.0"

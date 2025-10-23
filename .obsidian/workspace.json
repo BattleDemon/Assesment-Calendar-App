@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "2bd913862aefb932",
@@ -171,17 +172,17 @@
   },
   "active": "c78ca3a276a6a811",
   "lastOpenFiles": [
-    "target/debug/incremental/assesmentCalendarApp-3vfvmzg2ka5wy/s-hca95xwan9-1v23rib-4fphx8wi5w8m2bqrki03n2h15/work-products.bin",
-    "target/debug/incremental/assesmentCalendarApp-3vfvmzg2ka5wy/s-hca95xwan9-1v23rib-4fphx8wi5w8m2bqrki03n2h15/query-cache.bin",
-    "target/debug/incremental/assesmentCalendarApp-3vfvmzg2ka5wy/s-hca95xwan9-1v23rib-4fphx8wi5w8m2bqrki03n2h15/dep-graph.bin",
-    "target/debug/incremental/assesmentCalendarApp-3vfvmzg2ka5wy/s-hca95xwan9-1v23rib-4fphx8wi5w8m2bqrki03n2h15",
-    "target/debug/incremental/assesmentCalendarApp-05hzamecphwbu/s-hca95xw8ep-0qwykgw-aegfq7cvtvhfjdl9zjmjr238w/work-products.bin",
-    "target/debug/incremental/assesmentCalendarApp-05hzamecphwbu/s-hca95xw8ep-0qwykgw-aegfq7cvtvhfjdl9zjmjr238w/query-cache.bin",
-    "target/debug/incremental/assesmentCalendarApp-05hzamecphwbu/s-hca95xw8ep-0qwykgw-aegfq7cvtvhfjdl9zjmjr238w/dep-graph.bin",
-    "target/debug/incremental/assesmentCalendarApp-05hzamecphwbu/s-hca95xw8ep-0qwykgw-aegfq7cvtvhfjdl9zjmjr238w",
-    "target/debug/deps/libassesmentCalendarApp-4bbcff2dcb7cd8b1.rmeta",
-    "target/debug/deps/libassesmentCalendarApp-3d8bd927404c2e68.rmeta",
-    "target/debug/deps/assesmentCalendarApp-4bbcff2dcb7cd8b1.d",
+    "target/debug/deps/slint_macros-443c0066f3fc6f51.dll.lib",
+    "target/debug/deps/slint_macros-443c0066f3fc6f51.dll.exp",
+    "target/debug/deps/slint_macros-443c0066f3fc6f51.pdb",
+    "target/debug/deps/slint_macros-443c0066f3fc6f51.dll",
+    "target/debug/deps/slint_macros-443c0066f3fc6f51.slint_macros.ea1aa362ca33f475-cgu.08.rcgu.o",
+    "target/debug/deps/slint_macros-443c0066f3fc6f51.slint_macros.ea1aa362ca33f475-cgu.07.rcgu.o",
+    "target/debug/deps/slint_macros-443c0066f3fc6f51.slint_macros.ea1aa362ca33f475-cgu.09.rcgu.o",
+    "target/debug/deps/slint_macros-443c0066f3fc6f51.slint_macros.ea1aa362ca33f475-cgu.06.rcgu.o",
+    "target/debug/deps/slint_macros-443c0066f3fc6f51.slint_macros.ea1aa362ca33f475-cgu.10.rcgu.o",
+    "target/debug/deps/slint_macros-443c0066f3fc6f51.slint_macros.ea1aa362ca33f475-cgu.05.rcgu.o",
+    "target/debug/deps/slint_macros-443c0066f3fc6f51.slint_macros.ea1aa362ca33f475-cgu.11.rcgu.o",
     "Interview with Michael.md",
     "Readme.md",
     "2025-10-23.md"
