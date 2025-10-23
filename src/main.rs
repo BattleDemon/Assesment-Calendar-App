@@ -1,6 +1,15 @@
-use calamine::{open_workbook, Reader, Xlsx};
-use slint;
 
+
+slint::slint!{
+    export component HelloWorld {
+        Text {
+            text: "hello world";
+            color: green;
+        }
+    }
+}
+
+slint::include_modules!();
 fn main() {
-    println!("Hello, world!");
+    HelloWorld::new().unwrap().run().unwrap();
 }

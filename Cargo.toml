@@ -1,5 +1,6 @@
 [package]
 name = "assesmentCalendarApp"
+build = "build.rs"
 version = "0.1.0"
 edition = "2024"
 authors = ["Dexter Hart","DexterH@oranaschool.com"]
@@ -12,3 +13,6 @@ licence-file = ""
 [dependencies]
 calamine = "0.31.0"
 slint = "1.14.0"
+
+[build-dependencies]
+slint-build = "1.14"
