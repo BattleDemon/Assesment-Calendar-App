@@ -31,13 +31,44 @@ import json
 import os
 import sys
 
+class EntryPage():
+    pass
+
+class MainPage():
+        def __init__(self):
+            # Central widget and main horizontal layout
+            self.central_widget = QWidget() 
+            self.setCentralWidget(self.central_widget)
+            main_layout = QHBoxLayout(self.central_widget)
+
+            calendar = QCalendarWidget()
+
 class CalendarApp(QMainWindow):
     def __init__(self):
         super(CalendarApp, self).__init__()
 
-        self.setWindowTitle("Assesment Calendar")
+        self.setWindowTitle("Assessment Calendar")
+        self.setGeometry(200, 100, 1000, 600)
+
+        # Central widget and main horizontal layout
+        self.central_widget = QWidget() 
+        self.setCentralWidget(self.central_widget)
+        main_layout = QHBoxLayout(self.central_widget)
+
+        self.stacked = QStackedWidget()
+        main_layout.addWidget(self.stacked, 3)
 
         self.show()
+        
+
+        # Calendar page setup
+        self.calendar_page = QWidget()
+        cal_layout = QVBoxLayout(self.calendar_page)
+        self.calendar = QCalendarWidget()
+        self.calendar.setHorizontalHeaderFormat(QCalendarWidget.HorizontalHeaderFormat.NoHorizontalHeader)
+        self.calendar.setVerticalHeaderFormat(QCalendarWidget.VerticalHeaderFormat.NoVerticalHeader)
+        cal_layout.addWidget(self.calendar)
+        self.stacked.addWidget(self.calendar_page)
 
 
 if __name__ == "__main__":
