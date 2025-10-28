@@ -31,6 +31,8 @@ import json
 import os
 import sys
 
+
+
 class EntryPage():
     pass
 
@@ -69,6 +71,9 @@ class CalendarApp(QMainWindow):
         self.calendar.setVerticalHeaderFormat(QCalendarWidget.VerticalHeaderFormat.NoVerticalHeader)
         cal_layout.addWidget(self.calendar)
         self.stacked.addWidget(self.calendar_page)
+
+    def importDataFromExcel(self):
+         pass
 
 
 if __name__ == "__main__":
