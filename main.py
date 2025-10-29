@@ -32,7 +32,9 @@ import os
 import sys
 
 
-
+'''
+COOLEST PROJECT EVER. *EXPLOSION SFX*
+'''
 class EntryPage():
     pass
 
