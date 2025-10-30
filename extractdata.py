@@ -31,13 +31,38 @@ def _stop_at_blank_week(df_in: pd.DataFrame) -> pd.DataFrame:
     
     return pd.DataFrame(keep_rows, columns=df_in.columns)
 
-def _request_columns(df: pd.DataFrame, cols: list[str], label: str ):
+def _require_columns(df: pd.DataFrame, cols: list[str], label: str ):
     missing = [c for c in cols if c not in df.columns]
     if missing:
         raise ValueError(f"Missing {label} columns: {missing}")
 
 def extract_sheet1_json(xlsx_path: str, outdir: str = "."):
-    pass
+    raw = pd.read_excel(xlsx_path, sheet_name="Sheet1", header=None, dtype=str)
+    hdr = _find_header_row(raw)
+    df = pd.read_excel(xlsx_path, sheet_name="Sheet1", header=hdr, dtype=str)
+
+    _require_columns(df, FIXEDCOL, "fixed")
+    _require_columns(df, Y11, "Year 11")
+    _require_columns(df, Y12, "Year 12")
+
+    data = _stop_at_blank_week(df)
+
+    def nonempty_block(frame: pd.DataFrame, subcols: list[str]) -> pd.DataFrame:
+        out = frame[FIXEDCOL + subcols].copy()
+        mask_all_empty = out[subcols].apply(lambda s: s.fillna("").astype(str).str.strip()).eq("").all(axis=1)
+        return out.loc[~mask_all_empty]
+    
+    year11 = nonempty_block(data, Y11)
+    year12 = nonempty_block(data, Y12)
+
+    out_dir = Path(outdir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    year11.to_json(out_dir / "year11.json", orient="records", indent=2)
+    year12.to_json(out_dir / "year12.json", orient="records", indent=2 )
+
+    print("Json saved to:", out_dir.resolve())
+
+
 
 def main():
     ap = argparse.ArgumentParser(description="")
