@@ -1,4 +1,3 @@
-import argparse
 from pathlib import Path
 import pandas as pd
 
@@ -62,12 +61,4 @@ def extract_sheet1_json(xlsx_path: str, outdir: str = "."):
 
     print("Json saved to:", out_dir.resolve())
 
-
-
-def main():
-    ap = argparse.ArgumentParser(description="")
-    ap.add_argument("excel", help="")
-    ap.add_argument("--outdir", default=".", help="Output directory")
-    args = ap.parse_args()
-    extract_sheet1_json(args.excel, args.outdir)
 

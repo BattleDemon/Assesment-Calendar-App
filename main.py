@@ -32,6 +32,10 @@ import os
 import sys
 
 
+from extractdata import extract_sheet1_json
+
+extract_sheet1_json(xlsx_path="Test Senior Assessment Calendar (3).xlsx", outdir="./out")
+
 '''
 COOLEST PROJECT EVER. *EXPLOSION SFX*
 '''
@@ -74,8 +78,7 @@ class CalendarApp(QMainWindow):
         cal_layout.addWidget(self.calendar)
         self.stacked.addWidget(self.calendar_page)
 
-    def importDataFromExcel(self):
-         pass
+
 
 
 if __name__ == "__main__":
