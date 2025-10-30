@@ -31,8 +31,10 @@ def _stop_at_blank_week(df_in: pd.DataFrame) -> pd.DataFrame:
     
     return pd.DataFrame(keep_rows, columns=df_in.columns)
 
-def _request_columns(df: pd.DataFrame, cols: list[str], label[str] ):
-    pass
+def _request_columns(df: pd.DataFrame, cols: list[str], label: str ):
+    missing = [c for c in cols if c not in df.columns]
+    if missing:
+        raise ValueError(f"Missing {label} columns: {missing}")
 
 def extract_sheet1_json(xlsx_path: str, outdir: str = "."):
     pass
