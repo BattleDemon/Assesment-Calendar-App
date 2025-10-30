@@ -1,0 +1,28 @@
+{
+    "user": {
+        "name": "Dexter Hart",
+        "year": 11
+    },
+
+    "classes": [
+        {
+            "name": "IT"
+        },
+        {
+            "name": "English"
+        },
+        {
+            "name": "Maths Methods"
+        },
+        {
+            "name": "Specialist Maths"
+        },
+        {
+            "name": "History"
+        }
+    ],
+
+    "settings": {
+        "theme": "dark"
+    }
+}

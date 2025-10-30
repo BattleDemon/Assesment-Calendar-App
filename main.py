@@ -31,10 +31,9 @@ import json
 import os
 import sys
 
-
 from extractdata import extract_sheet1_json
 
-extract_sheet1_json(xlsx_path="Test Senior Assessment Calendar (3).xlsx", outdir="./out")
+extract_sheet1_json(xlsx_path="Test Senior Assessment Calendar (3).xlsx", outdir="./data")
 
 '''
 COOLEST PROJECT EVER. *EXPLOSION SFX*
