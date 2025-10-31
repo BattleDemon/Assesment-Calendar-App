@@ -5,21 +5,11 @@
     },
 
     "classes": [
-        {
-            "name": "IT"
-        },
-        {
-            "name": "English"
-        },
-        {
-            "name": "Maths Methods"
-        },
-        {
-            "name": "Specialist Maths"
-        },
-        {
-            "name": "History"
-        }
+        "IT",
+        "History",
+        "Specialists Maths",
+        "Maths Methods",
+        "English"
     ],
 
     "settings": {

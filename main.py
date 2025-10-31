@@ -33,11 +33,13 @@ import sys
 
 from extractdata import extract_sheet1_json
 
-extract_sheet1_json(xlsx_path="Test Senior Assessment Calendar (3).xlsx", outdir="./data")
+extract_sheet1_json(xlsx_path="Test Senior Assessment Calendar (4).xlsx", outdir="./data")
 
+# KEEP Special Comment
 '''
 COOLEST PROJECT EVER. *EXPLOSION SFX*
 '''
+
 class EntryPage():
     pass
 
@@ -77,7 +79,26 @@ class CalendarApp(QMainWindow):
         cal_layout.addWidget(self.calendar)
         self.stacked.addWidget(self.calendar_page)
 
+        self.filterReleventData()
 
+    def filterReleventData(self):
+
+        # Load user Data and store what classes the user does
+        
+        try:
+            with open('settings/settings.json', 'r') as file:
+                data = json.load(file)
+                print(data)
+                self.userclasses = data["classes"]
+                self.year = data["user"]["year"]
+        except FileNotFoundError:
+            print("Error: 'data.json' not found.")
+        except json.JSONDecodeError:
+            print("Error: Invalid JSON format in 'data.json'.")
+
+
+
+        
 
 
 if __name__ == "__main__":
