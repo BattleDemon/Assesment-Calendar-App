@@ -18,7 +18,7 @@ def _find_header_row(raw: pd.DataFrame, max_scan: int = 20) -> int:
 def fillOutFixedColdata(df: pd.DataFrame):
 
     for col in FIXEDCOL:
-        for row in df[col]:
+        for row in df:
             if row != None:
                 lastVal = row
 
