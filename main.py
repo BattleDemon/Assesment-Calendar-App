@@ -24,8 +24,8 @@ from PyQt6.QtWidgets import (
     QHeaderView
 ) 
 from PyQt6.QtCore import QDate, Qt
-from PyQt6.QtGui import QTextCharFormat, QBrush, QColor, QFont
-from PyQt6.QtCore import QTime
+from PyQt6.QtGui import QTextCharFormat, QBrush, QColor, QFont, QPainter
+from PyQt6.QtCore import QTime, QRect
 from datetime import datetime
 import json
 import os
@@ -71,6 +71,9 @@ class CalendarApp(QMainWindow):
         cal_layout.addWidget(self.calendar)
         self.stacked.addWidget(self.calendar_page)
 
+        testDate = QDate()
+        austrianPainter = QPainter()
+
         # Side Bar
         self.side_bar = QWidget()
         sidebar_layout = QVBoxLayout(self.side_bar)
@@ -93,6 +96,9 @@ class CalendarApp(QMainWindow):
             print("Error: 'data.json' not found.")
         except json.JSONDecodeError:
             print("Error: Invalid JSON format in 'data.json'.")
+
+    def ColorAssesmentTasks(self):
+        
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
