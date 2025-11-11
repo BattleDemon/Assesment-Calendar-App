@@ -98,7 +98,7 @@ class CalendarApp(QMainWindow):
             print("Error: Invalid JSON format in 'data.json'.")
 
     def ColorAssesmentTasks(self):
-        
+        pass
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
