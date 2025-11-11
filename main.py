@@ -33,7 +33,7 @@ import sys
 
 from extractdata import extract_sheet1_json
 
-extract_sheet1_json(xlsx_path="Test Senior Assessment Calendar (5).xlsx", outdir="./data")
+extract_sheet1_json(xlsx_path="Test Senior Assessment Calendar (6).xlsx", outdir="./data")
 
 # KEEP Special Comment
 '''
@@ -43,14 +43,6 @@ COOLEST PROJECT EVER. *EXPLOSION SFX*
 class EntryPage():
     pass
 
-class MainPage():
-        def __init__(self):
-            # Central widget and main horizontal layout
-            self.central_widget = QWidget() 
-            self.setCentralWidget(self.central_widget)
-            main_layout = QHBoxLayout(self.central_widget)
-
-            calendar = QCalendarWidget()
 
 class CalendarApp(QMainWindow):
     def __init__(self):
@@ -79,6 +71,12 @@ class CalendarApp(QMainWindow):
         cal_layout.addWidget(self.calendar)
         self.stacked.addWidget(self.calendar_page)
 
+        # Side Bar
+        self.side_bar = QWidget()
+        sidebar_layout = QVBoxLayout(self.side_bar)
+
+        self.stacked.addWidget(self.side_bar)
+
         self.filterReleventData()
 
     def filterReleventData(self):
@@ -95,11 +93,6 @@ class CalendarApp(QMainWindow):
             print("Error: 'data.json' not found.")
         except json.JSONDecodeError:
             print("Error: Invalid JSON format in 'data.json'.")
-
-
-
-        
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
