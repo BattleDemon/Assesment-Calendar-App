@@ -4,11 +4,13 @@
 
 ### Interview and Transcript
 
+Please see attached transcript or see the below notes.
 
+![Interview Transcript](InterviewWithMichael.md)
 
 ### Interview Notes
 
-#### Current System 
+#### Current System
 
 Teachers currently have to manually enter assessment data into multiple places like ACS, Schoolbox, and an Excel calendar. This means there’s a lot of double handling and inconsistency between what’s written in each system. Different teachers use different naming styles and formats, so sometimes course titles or task names don’t match. Students also have to dig through clunky portals or shared spreadsheets to see their due dates, and they aren’t notified when things change. Overall, the system is time consuming and hard to use for both teachers and students.
 
@@ -58,15 +60,25 @@ Provide consistant naming for assesments and a standard layout for the data.
 
 
 
-### Flow Chart
-
-
-### UI Design
-
-
 ## Development
 
-### Prototype 1:
+### Prototype 1: Extract Data and display Calendar
+
+#### Code Snippets
+
+#### Video of Functionality
+
+#### Issues
+
+### Prototype 2: Display Class Color and Add side bar inspection
+
+#### Code Snippets
+
+#### Video of Functionality
+
+#### Issues
+
+### Prototype 3: Add the Import data
 
 #### Code Snippets
 
