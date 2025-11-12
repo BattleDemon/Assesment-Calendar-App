@@ -2,10 +2,10 @@
   {
     "Week":"1",
     "Day":"Mon",
-    "Date":"2027-02-10",
+    "Date":"2025-10-27",
     "Events":null,
     "11 - Class":"English",
-    "11 - Task Name":"Big Balz",
+    "11 - Task Name":"Inclass essay",
     "11 - Weighting":"0.3",
     "11 - Task Type":"Inclass Essay",
     "11 - Other Notes":"Thats not all thats big"
@@ -13,18 +13,29 @@
   {
     "Week":"1",
     "Day":"Mon",
-    "Date":"2027-02-10",
+    "Date":"2025-10-27",
     "Events":null,
     "11 - Class":"English",
-    "11 - Task Name":"Sml Bowlz",
+    "11 - Task Name":"Other task",
     "11 - Weighting":"0.01",
-    "11 - Task Type":"Task Type",
+    "11 - Task Type":"Report",
+    "11 - Other Notes":null
+  },
+  {
+    "Week":"1",
+    "Day":"Tue",
+    "Date":"2025-10-28",
+    "Events":null,
+    "11 - Class":"Drama",
+    "11 - Task Name":"this is a task",
+    "11 - Weighting":"0.3",
+    "11 - Task Type":"Project",
     "11 - Other Notes":null
   },
   {
     "Week":"1",
     "Day":"Wed",
-    "Date":"2027-02-12",
+    "Date":"2025-10-29",
     "Events":null,
     "11 - Class":"IT",
     "11 - Task Name":"In CLass",
@@ -33,9 +44,20 @@
     "11 - Other Notes":"Bring page of quotes"
   },
   {
+    "Week":"1",
+    "Day":"Fri",
+    "Date":"2025-10-31",
+    "Events":null,
+    "11 - Class":"IT",
+    "11 - Task Name":"Portfolio Task",
+    "11 - Weighting":null,
+    "11 - Task Type":"Portfolio",
+    "11 - Other Notes":null
+  },
+  {
     "Week":"2",
     "Day":"Mon",
-    "Date":"2027-02-17",
+    "Date":null,
     "Events":null,
     "11 - Class":"History",
     "11 - Task Name":"MAke DoCuMEntaRy",
@@ -46,10 +68,10 @@
   {
     "Week":"2",
     "Day":"Wed",
-    "Date":"2027-02-19",
+    "Date":null,
     "Events":null,
     "11 - Class":"Psychology",
-    "11 - Task Name":"BIG Thin",
+    "11 - Task Name":"BIG PROJECt",
     "11 - Weighting":"0.99",
     "11 - Task Type":"Presentation",
     "11 - Other Notes":"gewgw"

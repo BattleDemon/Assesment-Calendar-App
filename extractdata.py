@@ -88,6 +88,6 @@ def extract_to_json(xlsx_path: str, outdir: str = "./data"):
     data11.to_json(out_dir / "year11.json", orient="records", indent=2)
     data12.to_json(out_dir / "year12.json", orient="records", indent=2 )
 
-    print("Json saved to:", out_dir.resolve())
-
+    print(data11)
+    print(data12)
 
