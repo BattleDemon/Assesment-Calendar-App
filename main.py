@@ -88,7 +88,6 @@ class CalendarApp(QMainWindow):
         self.show()
 
         self.class_colors = load_class_colors()
-        
 
         # Calendar page setup
         self.calendar_page = QWidget()
@@ -99,31 +98,61 @@ class CalendarApp(QMainWindow):
         cal_layout.addWidget(self.calendar)
         self.stacked.addWidget(self.calendar_page)
 
-        testDate = QDate()
-        austrianPainter = QPainter()
-
         # Side Bar
         self.side_bar = QWidget()
         sidebar_layout = QVBoxLayout(self.side_bar)
-
         self.stacked.addWidget(self.side_bar)
 
-        self.filterReleventData()
+        # state
+        self.records = []
+        self.by_date = {}
+        self.user_classes = []
+        self.year = None
 
+        # load settings and data, then paint
+        self.filterReleventData()
+        self.load_records()
+        self.refresh_index()
         self.paint_calendar()
 
     def filterReleventData(self):
-
-        # Load user Data and store what classes the user does
-        
-        with open(SETTINGS_DIR / "settings.json", 'r') as file:
+        # Load user data and store what classes the user does
+        with open(SETTINGS_DIR / "settings.json", 'r', encoding="utf-8") as file:
             data = json.load(file)
-            print(data)
-            self.userclasses = data["classes"]
-            self.year = data["user"]["year"]
+        self.user_classes = data.get("classes", [])
+        self.year = data.get("user", {}).get("year", None)
+
+    def load_records(self):
+        # try combined first
+        self.records = []
+        try:
+            self.records = json.loads((DATA_DIR / "combined.json").read_text(encoding="utf-8"))
+        except:
+            pass
+        # if not present, try both year files
+        if not self.records:
+            for name in ["year11.json", "year12.json"]:
+                p = DATA_DIR / name
+                try:
+                    rows = json.loads(p.read_text(encoding="utf-8"))
+                    if isinstance(rows, list):
+                        self.records.extend(rows)
+                except:
+                    pass
+
+    def refresh_index(self):
+        # group all records by date, keep only the student's classes
+        self.by_date = {}
+        for r in self.records:
+            d = str(r.get("Date", "")).strip()
+            if not d:
+                continue
+            if self.user_classes and r.get("Class") not in self.user_classes:
+                continue
+            self.by_date.setdefault(d, []).append(r)
 
     def class_colour_for_date(self, items_for_date):
-        # look at all classes on this date that match the student's class list
+        # classes on this date that the student actually takes
         matches = []
         for r in items_for_date:
             c = r.get("Class", "")
@@ -131,7 +160,7 @@ class CalendarApp(QMainWindow):
                 matches.append(c)
 
         if not matches:
-            return QColor(180, 180, 180)   # grey if no match
+            return QColor(180, 180, 180)  # grey if no match
 
         # pick whichever class appears most
         best = max(set(matches), key=matches.count)
@@ -148,18 +177,40 @@ class CalendarApp(QMainWindow):
         else:
             return QColor(200, 60, 60)
 
-
     def paint_calendar(self):
         for d, items in self.by_date.items():
-            try:
-                y, m, dd = [int(x) for x in d.split("-")]
-                qd = QDate(y, m, dd)
-            except:
-                continue
-            col = self.class_colour_for_date(items)
+            # choose class to color by: most frequent class on that date that the student actually takes
+            matches = []
+            for r in items:
+                c = r.get("Class", "")
+                if c in self.user_classes:
+                    matches.append(c)
+
+            # default grey if nothing matches
+            col = QColor(180, 180, 180)
+
+            if matches:
+                class_choice = max(set(matches), key=matches.count)
+                hx = self.class_colors.get(class_choice)
+                if isinstance(hx, str):
+                    s = hx.strip()
+                    if not s.startswith("#"):
+                        s = "#" + s
+                    if len(s) == 8:
+                        s = s[:7]
+                    if len(s) == 7:
+                        try:
+                            col = QColor(s)
+                        except:
+                            pass
+
+            # paint the date cell
+            y, m, dd = [int(x) for x in d.split("-")]
+            qd = QDate(y, m, dd)
             fmt = QTextCharFormat()
             fmt.setBackground(QBrush(col))
             self.calendar.setDateTextFormat(qd, fmt)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
