@@ -36,8 +36,8 @@ APP_DIR = Path(os.path.dirname(__file__))
 DATA_DIR = APP_DIR / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-# STATE_PATH stores lightweight UI settings such as last Excel path, chosen year, and classes.
-STATE_PATH = DATA_DIR / "ui_state.json"
+# USER_PATH stores lightweight UI settings such as last Excel path, chosen year, and classes.
+USER_PATH = DATA_DIR / "user.json"
 # EXTRACTOR_PATH is the helper script which converts the Excel workbook into JSON files.
 EXTRACTOR_PATH = APP_DIR / "extractdata.py"
 
@@ -160,7 +160,7 @@ class AssessmentApp(QMainWindow):
         self.setGeometry(200, 100, 1200, 700)
 
         # Keep a small amount of state to remember last choices across runs.
-        self.state = self.load_state()
+        self.state = self.load_user()
         self.excel_path = self.state.get("excel_path", "")
         self.year = self.state.get("year", 11)
         self.classes = self.state.get("classes", [])
@@ -325,7 +325,7 @@ class AssessmentApp(QMainWindow):
         selected = [i.text() for i in self.class_list.selectedItems()]
         self.classes = selected
         self.year = int(self.year_box.currentText())
-        self.save_state()
+        self.save_user()
         self.load_data()
         self.toggle_setup_panel()
 
@@ -452,20 +452,19 @@ class AssessmentApp(QMainWindow):
         self.details.setHtml(html)
 
     # ---------------- Persistence helpers ----------------
-    def save_state(self):
+    def save_user(self):
         """Write a tiny JSON file with the last used Excel path, year, and classes."""
-        with open(STATE_PATH, "w", encoding="utf-8") as f:
+        with open(USER_PATH, "w", encoding="utf-8") as f:
             json.dump({
                 "excel_path": self.excel_path,
                 "year": self.year,
                 "classes": self.classes,
             }, f, indent=2)
 
-    def load_state(self) -> dict:
-        """Read the tiny JSON state file. If missing, return an empty dict."""
-        if STATE_PATH.exists():
+    def load_user(self) -> dict:
+        if USER_PATH.exists():
             try:
-                with open(STATE_PATH, "r", encoding="utf-8") as f:
+                with open(USER_PATH, "r", encoding="utf-8") as f:
                     return json.load(f)
             except Exception:
                 return {}

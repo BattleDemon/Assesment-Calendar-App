@@ -8,7 +8,7 @@
     "11 - Task Name":"Inclass essay",
     "11 - Weighting":"0.3",
     "11 - Task Type":"Inclass Essay",
-    "11 - Other Notes":"Thats not all thats big"
+    "11 - Other Notes":"This is a note that the peoples can see"
   },
   {
     "Week":"1",
@@ -78,6 +78,17 @@
   },
   {
     "Week":"2",
+    "Day":"Tue",
+    "Date":null,
+    "Events":null,
+    "11 - Class":"Maths Methods",
+    "11 - Task Name":"Sleeping",
+    "11 - Weighting":"0.8",
+    "11 - Task Type":"Report",
+    "11 - Other Notes":null
+  },
+  {
+    "Week":"2",
     "Day":"Wed",
     "Date":null,
     "Events":null,
@@ -86,6 +97,17 @@
     "11 - Weighting":"0.99",
     "11 - Task Type":"Presentation",
     "11 - Other Notes":"gewgw"
+  },
+  {
+    "Week":"2",
+    "Day":"Fri",
+    "Date":null,
+    "Events":null,
+    "11 - Class":"Human Biology",
+    "11 - Task Name":"Bio stuff",
+    "11 - Weighting":"0.42",
+    "11 - Task Type":"Project",
+    "11 - Other Notes":"Study"
   },
   {
     "Week":"3",
@@ -107,6 +129,17 @@
     "11 - Task Name":"POgew gwe ",
     "11 - Weighting":"0.12",
     "11 - Task Type":"Report",
+    "11 - Other Notes":null
+  },
+  {
+    "Week":"4",
+    "Day":"Thur",
+    "Date":"2025-11-20",
+    "Events":null,
+    "11 - Class":"Chemistry",
+    "11 - Task Name":"Chem Test",
+    "11 - Weighting":"0.25",
+    "11 - Task Type":"Test",
     "11 - Other Notes":null
   },
   {
