@@ -7,13 +7,14 @@ Y11 = ["11 - Class", "11 - Task Name", "11 - Weighting", "11 - Task Type", "11 -
 Y12 = ["12 - Class", "12 - Task Name", "12 - Weighting", "12 - Task Type", "12 - Other Notes"]
 
 def _find_header_row(raw: pd.DataFrame, max_scan: int = 20) -> int:
-    # Locates the Header row incase the excel users change the row
-    for i in range(min(max_scan, len(raw))):
+    target = [c.lower() for c in FIXEDCOL]
+    nrows = min(max_scan, len(raw))
+    for i in range(nrows):
         row = raw.iloc[i].fillna("")
-        first4 = [str(row.get(j, "")).strip().lower() for j in range(4)]
-        if first4 == ["week", "day", "date", "events"]:
+        probe = [str(row.get(j, "")).strip().lower() for j in range(4)]
+        if probe == target:
             return i
-        return 0
+    return 0
 
 def fillOutFixedColdata(df: pd.DataFrame):
 
