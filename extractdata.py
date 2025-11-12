@@ -81,6 +81,10 @@ def extract_to_json(xlsx_path: str, outdir: str = "./data"):
     out_dir = (Path(outdir)).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    for frame in (data11, data12):
+        if "Date" in frame.columns:
+            frame["Date"] = pd.to_datetime(frame["Date"], errors="coerce").dt.strftime("%Y-%m-%d")
+
     data11.to_json(out_dir / "year11.json", orient="records", indent=2)
     data12.to_json(out_dir / "year12.json", orient="records", indent=2 )
 
