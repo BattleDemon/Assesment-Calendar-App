@@ -30,10 +30,14 @@ from datetime import datetime
 import json
 import os
 import sys
+from pathlib import Path
 
-from extractdata import extract_sheet1_json
+DATA_DIR =  Path("data")
+SETTINGS_DIR = Path("settings")
 
-extract_sheet1_json(xlsx_path="Test Senior Assessment Calendar (6).xlsx", outdir="./data")
+from extractdata import extract_to_json
+
+extract_to_json(xlsx_path="Test Senior Assessment Calendar (6).xlsx", outdir=DATA_DIR)
 
 # KEEP Special Comment
 '''
@@ -86,16 +90,12 @@ class CalendarApp(QMainWindow):
 
         # Load user Data and store what classes the user does
         
-        try:
-            with open('settings/settings.json', 'r') as file:
-                data = json.load(file)
-                print(data)
-                self.userclasses = data["classes"]
-                self.year = data["user"]["year"]
-        except FileNotFoundError:
-            print("Error: 'data.json' not found.")
-        except json.JSONDecodeError:
-            print("Error: Invalid JSON format in 'data.json'.")
+        with open(SETTINGS_DIR / "settings.json", 'r') as file:
+            data = json.load(file)
+            print(data)
+            self.userclasses = data["classes"]
+            self.year = data["user"]["year"]
+
 
     def ColorAssesmentTasks(self):
         pass

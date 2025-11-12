@@ -6,6 +6,9 @@ FIXEDCOL = ["Week", "Day", "Date", "Events"]
 Y11 = ["11 - Class", "11 - Task Name", "11 - Weighting", "11 - Task Type", "11 - Other Notes"]
 Y12 = ["12 - Class", "12 - Task Name", "12 - Weighting", "12 - Task Type", "12 - Other Notes"]
 
+DATA_DIR = Path("data")
+SETTINGS_DIR = Path("settings")
+
 def _find_header_row(raw: pd.DataFrame, max_scan: int = 20) -> int:
     target = [c.lower() for c in FIXEDCOL]
     nrows = min(max_scan, len(raw))
@@ -44,10 +47,17 @@ def _checkForTempValue(df: pd.DataFrame, cols: list[str] ) -> pd.DataFrame:
     return pd.DataFrame(keep_rows)
 
 
-def extract_sheet1_json(xlsx_path: str, outdir: str = "."):
-    raw = pd.read_excel(xlsx_path, sheet_name="Sheet1", header=None, dtype=str)
+def extract_to_json(xlsx_path: str, outdir: str = "./data"):
+
+    xlsx = Path(xlsx_path)
+
+    raw = pd.read_excel(xlsx, sheet_name="Sheet1", header=None, dtype=str)
     hdr = _find_header_row(raw)
-    df = pd.read_excel(xlsx_path, sheet_name="Sheet1", header=hdr, dtype=str)
+    df = pd.read_excel(xlsx, sheet_name="Sheet1", header=hdr, dtype=str)
+
+    for c in FIXEDCOL:
+        if c not in df.columns:
+            df[c] = df[c].ffill()
 
     _require_columns(df, FIXEDCOL, "fixed")
     _require_columns(df, Y11, "Year 11")
@@ -67,8 +77,9 @@ def extract_sheet1_json(xlsx_path: str, outdir: str = "."):
     data11 = nonempty_block(data11, Y11)
     data12 = nonempty_block(data12, Y12)
 
-    out_dir = Path(outdir)
+    out_dir = (Path(outdir)).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
+
     data11.to_json(out_dir / "year11.json", orient="records", indent=2)
     data12.to_json(out_dir / "year12.json", orient="records", indent=2 )
 
