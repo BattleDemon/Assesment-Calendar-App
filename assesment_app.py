@@ -1,5 +1,9 @@
+# Assessment App (split side panels: Setup + Date Sidebar)
+# - Left slide-in panel for Setup (file/year/classes)
+# - Main view uses a splitter: Calendar on the left, a **date sidebar** on the right
+# - Date sidebar lists all dates (in current month) that have tasks; clicking a date selects it
+# - Calendar colouring now uses the **dominant class** for that date (no RGB averaging)
 
-# /* ------ Import Used Libraries ------ */
 from PyQt6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -15,21 +19,26 @@ from PyQt6.QtWidgets import (
     QTextEdit,
     QFileDialog,
     QComboBox,
-    QDateEdit,
-    QStackedWidget,
-    QSpacerItem,
-    QSizePolicy
-) 
-from PyQt6.QtCore import QDate, Qt
+    QSplitter,
+    QSizePolicy,
+)
 from PyQt6.QtGui import QTextCharFormat, QBrush, QColor, QFont
-import json
+from PyQt6.QtCore import QDate, Qt
+
 import os
 import sys
-import importlib.util
+import json
 from pathlib import Path
+import importlib.util
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime
 
+APP_DIR = Path(os.path.dirname(__file__))
+DATA_DIR = APP_DIR / "data"
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+STATE_PATH = DATA_DIR / "ui_state.json"
+EXTRACTOR_PATH = APP_DIR / "extractdata.py"
 
 CLASS_COLORS = {
     "English": "#80002f",
@@ -47,459 +56,309 @@ CLASS_COLORS = {
     "Design Tech": "#a52a2a",
     "Visual Arts": "#FF8C00",
     "Drama": "#9966cc",
-    "Music": "#70193d"
+    "Music": "#70193d",
 }
 
-# Column maps
-Y11_COLS = {
-    "class": "11 - Class",
-    "task": "11 - Task Name",
-    "weight": "11 - Weighting",
-    "type": "11 - Task Type",
-    "notes": "11 - Other Notes"
-}
-Y12_COLS = {
-    "class": "12 - Class",
-    "task": "12 - Task Name",
-    "weight": "12 - Weighting",
-    "type": "12 - Task Type",
-    "notes": "12 - Other Notes"
-}
-FIXED = ["Week", "Day", "Date", "Events"]
+Y11_COLS = {"class": "11 - Class", "task": "11 - Task Name", "weight": "11 - Weighting", "type": "11 - Task Type", "notes": "11 - Other Notes"}
+Y12_COLS = {"class": "12 - Class", "task": "12 - Task Name", "weight": "12 - Weighting", "type": "12 - Task Type", "notes": "12 - Other Notes"}
+FIXED_COLUMNS = ["Week", "Day", "Date", "Events"]
 
-APP_DIR = Path(os.path.dirname(__file__))
-DATA_DIR = APP_DIR / "data"
-DATA_DIR.mkdir(parents=True, exist_ok=True)
-STATE_PATH = DATA_DIR / "ui_state.json"
-EXTRACTOR = APP_DIR / "extractdata.py"
+# --- Minimal helpers ---
+
+def run_extractor(path):
+    if not EXTRACTOR_PATH.exists():
+        return False
+    spec = importlib.util.spec_from_file_location("extractdata", str(EXTRACTOR_PATH))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)  # type: ignore
+    func = getattr(mod, "extract_to_json", None)
+    if callable(func):
+        func(xlsx_path=path)
+        return True
+    return False
 
 
-# ----- Helpers -----
-def rgb_from_hex(h):
-    h = h.lstrip("#")
-    return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
-
-def hex_from_rgb(r, g, b):
-    return "#{:02x}{:02x}{:02x}".format(max(0, min(255, int(r))), max(0, min(255, int(g))), max(0, min(255, int(b))))
-
-def blend_colors(hex_list):
-    if not hex_list:
-        return "#cccccc"
-    rs, gs, bs = 0, 0, 0
-    for h in hex_list:
-        r, g, b = rgb_from_hex(h)
-        rs += r; gs += g; bs += b
-    n = max(1, len(hex_list))
-    return hex_from_rgb(rs / n, gs / n, bs / n)
-
-def read_dataset(year_json: Path, cols_map: dict) -> pd.DataFrame:
-    df = pd.read_json(year_json)
-    keep = FIXED + list(cols_map.values())
-    for col in keep:
-        if col not in df.columns:
-            df[col] = ""
-    df = df[keep].copy()
-    df.rename(columns={
-        cols_map["class"]: "Class",
-        cols_map["task"]: "Task",
-        cols_map["weight"]: "Weighting",
-        cols_map["type"]: "Type",
-        cols_map["notes"]: "Notes",
-    }, inplace=True)
-    df["Date"] = pd.to_datetime(df["Date"], errors="coerce").dt.strftime("%Y-%m-%d")
-    return df
-
-def ensure_extract(excel_path: str, extractor_path: str):
-    y11 = DATA_DIR / "year11.json"
-    y12 = DATA_DIR / "year12.json"
-    if y11.exists() and y12.exists():
-        return True, ""
-    try:
-        spec = importlib.util.spec_from_file_location("extractdata", extractor_path)
-        mod = importlib.util.module_from_spec(spec)  # type: ignore
-        assert spec and spec.loader
-        spec.loader.exec_module(mod)  # type: ignore
-        if hasattr(mod, "extract_to_json"):
-            mod.extract_to_json(excel_path, outdir=str(DATA_DIR))
-        else:
-            return False, "extractdata.py is missing extract_to_json(excel_path, outdir)"
-    except Exception as e:
-        return False, f"{e}"
-    return True, ""
-
-def load_state():
-    if STATE_PATH.exists():
-        try:
-            return json.load(open(STATE_PATH, "r", encoding="utf-8"))
-        except Exception:
-            pass
-    # Defaults
-    return {
-        "year": None,
-        "classes": [],
-        "excel_path": "",
-        "valid_until": ""  # yyyy-mm-dd
-    }
-
-def save_state(state: dict):
-    with open(STATE_PATH, "w", encoding="utf-8") as f:
-        json.dump(state, f, indent=2)
-
-
-def auto_valid_until_date(excel_path: str, year: int) -> QDate:
-    """Read the chosen year dataset and compute max(Date) + 14 days as a QDate."""
-    ok, err = ensure_extract(excel_path, str(EXTRACTOR))
-    if not ok:
-        return QDate.currentDate().addDays(14)
-    ypath = DATA_DIR / ("year11.json" if year == 11 else "year12.json")
+def read_data(year):
+    path = DATA_DIR / ("year11.json" if year == 11 else "year12.json")
     cols = Y11_COLS if year == 11 else Y12_COLS
+    if not path.exists():
+        return pd.DataFrame()
     try:
-        df = read_dataset(ypath, cols)
-        if df.empty:
-            return QDate.currentDate().addDays(14)
-        dts = pd.to_datetime(df["Date"], errors="coerce").dropna()
-        if dts.empty:
-            return QDate.currentDate().addDays(14)
-        last = dts.max() + pd.Timedelta(days=14)
-        return QDate(last.year, last.month, last.day)
+        df = pd.read_json(path)
     except Exception:
-        return QDate.currentDate().addDays(14)
+        return pd.DataFrame()
+    out = pd.DataFrame({
+        "Date": pd.to_datetime(df.get("Date", ""), errors='coerce').dt.strftime('%Y-%m-%d'),
+        "Class": df.get(cols['class'], "").fillna(""),
+        "Task": df.get(cols['task'], "").fillna(""),
+        "Weighting": df.get(cols['weight'], "").fillna(""),
+        "Type": df.get(cols['type'], "").fillna(""),
+        "Notes": df.get(cols['notes'], "").fillna(""),
+        "Events": df.get("Events", "").fillna(""),
+    })
+    return out.dropna(subset=['Date'])
 
 
-# /* ----- Main App Class ----- */
-class StudentCalendarApp(QMainWindow):
+class AssessmentApp(QMainWindow):
     def __init__(self):
-        super(StudentCalendarApp, self).__init__()
-        self.setWindowTitle("Senior Assessment — Calendar")
-        self.setGeometry(200, 120, 1024, 640)
+        super().__init__()
+        self.setWindowTitle("Assessment Calendar")
+        self.setGeometry(200, 100, 1200, 700)
 
-        self.state = load_state()
+        self.state = self.load_state()
         self.excel_path = self.state.get("excel_path", "")
-        self.extractor_path = str(EXTRACTOR)
+        self.year = self.state.get("year", 11)
+        self.classes = self.state.get("classes", [])
+        self.df = pd.DataFrame()
 
-        # Pages
-        self.stack = QStackedWidget()
-        self.setCentralWidget(self.stack)
+        # Outer splitter: left slide-in setup panel, right main area
+        self.outer_split = QSplitter(Qt.Orientation.Horizontal)
+        self.setCentralWidget(self.outer_split)
 
-        # Setup page
-        self.setup_page = QWidget()
-        self.build_setup_page()
-        self.stack.addWidget(self.setup_page)
+        self.build_setup_panel()
+        self.build_main_area()
 
-        # Calendar page
-        self.calendar_page = QWidget()
-        self.build_calendar_page()
-        self.stack.addWidget(self.calendar_page)
-
-        # Decide which page to show
-        if self.needs_setup():
-            self.stack.setCurrentWidget(self.setup_page)
-        else:
-            self.load_data_and_show_calendar()
+        self.outer_split.addWidget(self.setup_panel)
+        self.outer_split.addWidget(self.main_area)
+        self.outer_split.setSizes([0, 1])  # setup hidden by default
 
         self.show()
+        if self.excel_path and self.classes:
+            self.load_data()
 
-    # ----- Setup page -----
-    def build_setup_page(self):
-        v = QVBoxLayout(self.setup_page)
-        v.addWidget(QLabel("Set up your student profile"))
+    # ---------------- UI ----------------
+    def build_setup_panel(self):
+        self.setup_panel = QWidget()
+        layout = QVBoxLayout(self.setup_panel)
 
-        row_year = QWidget()
-        hy = QHBoxLayout(row_year); hy.setContentsMargins(0,0,0,0)
-        hy.addWidget(QLabel("Year"))
+        self.file_label = QLabel(self.excel_path or "No Excel selected")
+        self.btn_browse = QPushButton("Choose Excel…")
+        self.btn_scan = QPushButton("Scan for Classes")
+
+        layout.addWidget(self.file_label)
+        layout.addWidget(self.btn_browse)
+        layout.addWidget(QLabel("Year:"))
         self.year_box = QComboBox()
         self.year_box.addItems(["11", "12"])
-        # if saved year exists, set it
-        if self.state.get("year"):
-            self.year_box.setCurrentText(str(self.state["year"]))
-        self.year_box.currentTextChanged.connect(self.on_year_changed_recalc_validuntil)
-        hy.addWidget(self.year_box)
-        v.addWidget(row_year)
+        # restore previous year
+        idx = self.year_box.findText(str(self.year))
+        if idx >= 0:
+            self.year_box.setCurrentIndex(idx)
+        layout.addWidget(self.year_box)
 
-        row_excel = QWidget()
-        hx = QHBoxLayout(row_excel); hx.setContentsMargins(0,0,0,0)
-        hx.addWidget(QLabel("Excel file"))
-        self.excel_label = QLabel(self.excel_path if self.excel_path else "No file chosen")
-        choose_btn = QPushButton("Choose Excel…")
-        choose_btn.clicked.connect(self.choose_excel)
-        hx.addWidget(self.excel_label, 1)
-        hx.addWidget(choose_btn)
-        v.addWidget(row_excel)
-
-        row_valid = QWidget()
-        hv = QHBoxLayout(row_valid); hv.setContentsMargins(0,0,0,0)
-        hv.addWidget(QLabel("Valid until"))
-        self.valid_until = QDateEdit()
-        self.valid_until.setCalendarPopup(True)
-        # If we have saved state and it's valid, use it; else will be computed after scan/choose
-        if self.state.get("valid_until"):
-            try:
-                dt = datetime.strptime(self.state["valid_until"], "%Y-%m-%d")
-                self.valid_until.setDate(QDate(dt.year, dt.month, dt.day))
-            except Exception:
-                self.valid_until.setDate(QDate.currentDate().addDays(14))
-        else:
-            self.valid_until.setDate(QDate.currentDate().addDays(14))
-        hv.addWidget(self.valid_until)
-        v.addWidget(row_valid)
-
-        v.addWidget(QLabel("Select your classes"))
+        layout.addWidget(QLabel("Select Classes:"))
         self.class_list = QListWidget()
         self.class_list.setSelectionMode(QListWidget.SelectionMode.MultiSelection)
-        v.addWidget(self.class_list, 1)
+        layout.addWidget(self.class_list, 1)
 
-        # Buttons
-        buttons = QWidget()
-        hb = QHBoxLayout(buttons); hb.setContentsMargins(0,0,0,0)
-        self.scan_btn = QPushButton("Scan Excel for Classes")
-        self.scan_btn.setToolTip("Run extractor and populate classes for chosen year")
-        self.scan_btn.clicked.connect(self.scan_classes)
-        self.save_btn = QPushButton("Save & Continue")
-        self.save_btn.clicked.connect(self.save_setup)
-        hb.addWidget(self.scan_btn)
-        hb.addStretch(1)
-        hb.addWidget(self.save_btn)
-        v.addWidget(buttons)
+        self.btn_save = QPushButton("Save & Close")
+        layout.addWidget(self.btn_scan)
+        layout.addWidget(self.btn_save)
 
-        v.addItem(QSpacerItem(0,0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
+        self.btn_browse.clicked.connect(self.choose_file)
+        self.btn_scan.clicked.connect(self.scan_excel)
+        self.btn_save.clicked.connect(self.save_and_hide)
 
-        # If we already have an excel + year and classes, pre-populate list
-        if self.excel_path and self.state.get("year"):
-            self.populate_classes_from_state()
+    def build_main_area(self):
+        self.main_area = QWidget()
+        main_v = QVBoxLayout(self.main_area)
 
-    def choose_excel(self):
-        fn, _ = QFileDialog.getOpenFileName(self, "Choose Excel", str(APP_DIR))
-        if fn:
-            self.excel_path = fn
-            self.excel_label.setText(fn)
-            # auto recompute valid-until immediately
-            year = int(self.year_box.currentText())
-            vu = auto_valid_until_date(self.excel_path, year)
-            self.valid_until.setDate(vu)
+        # Top row with toggle button
+        top = QHBoxLayout()
+        self.btn_toggle_setup = QPushButton("☰ Setup")
+        top.addWidget(self.btn_toggle_setup)
+        top.addStretch()
+        main_v.addLayout(top)
 
-    def on_year_changed_recalc_validuntil(self):
-        if self.excel_path:
-            year = int(self.year_box.currentText())
-            vu = auto_valid_until_date(self.excel_path, year)
-            self.valid_until.setDate(vu)
+        # Inner splitter: calendar on left, date sidebar on right
+        self.inner_split = QSplitter(Qt.Orientation.Horizontal)
+        main_v.addWidget(self.inner_split, 1)
 
-    def scan_classes(self):
-        if not self.excel_path:
-            QMessageBox.information(self, "Excel", "Please choose an Excel file first.")
-            return
-        year = int(self.year_box.currentText())
-        ok, err = ensure_extract(self.excel_path, self.extractor_path)
-        if not ok:
-            QMessageBox.critical(self, "Extract", err)
-            return
-        # Load dataframe for year and enumerate classes
-        ypath = DATA_DIR / ("year11.json" if year == 11 else "year12.json")
-        cols_map = Y11_COLS if year == 11 else Y12_COLS
-        try:
-            df = read_dataset(ypath, cols_map)
-        except Exception as e:
-            QMessageBox.critical(self, "Read", str(e))
-            return
-        self.class_list.clear()
-        classes = sorted(c for c in df["Class"].dropna().unique() if str(c).strip())
-        for c in classes:
-            item = QListWidgetItem(str(c))
-            if c in CLASS_COLORS:
-                item.setSelected(True)
-            self.class_list.addItem(item)
-        # after scanning, compute valid until = last date + 14 days
-        vu = auto_valid_until_date(self.excel_path, year)
-        self.valid_until.setDate(vu)
-
-    def populate_classes_from_state(self):
-        """If state valid, populate classes list and selection based on saved classes."""
-        year = int(self.state.get("year"))
-        ok, err = ensure_extract(self.excel_path, self.extractor_path)
-        if not ok:
-            return
-        ypath = DATA_DIR / ("year11.json" if year == 11 else "year12.json")
-        cols_map = Y11_COLS if year == 11 else Y12_COLS
-        try:
-            df = read_dataset(ypath, cols_map)
-        except Exception:
-            return
-        classes = sorted(c for c in df["Class"].dropna().unique() if str(c).strip())
-        self.class_list.clear()
-        for c in classes:
-            item = QListWidgetItem(str(c))
-            if c in self.state.get("classes", []):
-                item.setSelected(True)
-            self.class_list.addItem(item)
-
-    def save_setup(self):
-        if not self.excel_path:
-            QMessageBox.information(self, "Setup", "Please choose an Excel file.")
-            return
-        sel = [i.text() for i in self.class_list.selectedItems()]
-        if not sel:
-            QMessageBox.information(self, "Setup", "Please select at least one class.")
-            return
-        year = int(self.year_box.currentText())
-        # always recalc valid-until from data at save time to keep it in sync
-        vu_qdate = auto_valid_until_date(self.excel_path, year)
-        self.valid_until.setDate(vu_qdate)
-        vu = vu_qdate.toString("yyyy-MM-dd")
-
-        self.state = {
-            "year": year,
-            "classes": sel,
-            "excel_path": self.excel_path,
-            "valid_until": vu
-        }
-        save_state(self.state)
-        self.load_data_and_show_calendar()
-
-    def needs_setup(self):
-        year = self.state.get("year")
-        excel = self.state.get("excel_path", "")
-        valid_until = self.state.get("valid_until", "")
-        if not year or not excel:
-            return True
-        if valid_until:
-            try:
-                today = datetime.now().date()
-                vu = datetime.strptime(valid_until, "%Y-%m-%d").date()
-                if today > vu:
-                    return True
-            except Exception:
-                return True
-        # Also ensure extracted JSON exists; if not, force setup so scanning runs
-        if not (DATA_DIR / "year11.json").exists() or not (DATA_DIR / "year12.json").exists():
-            return True
-        return False
-
-    # ----- Calendar page -----
-    def build_calendar_page(self):
-        root = QHBoxLayout(self.calendar_page)
-        # Calendar
+        # Left: Calendar widget
+        cal_wrap = QWidget()
+        cal_v = QVBoxLayout(cal_wrap)
         self.calendar = QCalendarWidget()
+        self.calendar.setHorizontalHeaderFormat(QCalendarWidget.HorizontalHeaderFormat.NoHorizontalHeader)
         self.calendar.setVerticalHeaderFormat(QCalendarWidget.VerticalHeaderFormat.NoVerticalHeader)
-        root.addWidget(self.calendar, 3)
-        # Sidebar
-        side_wrap = QWidget()
-        side = QVBoxLayout(side_wrap)
-        side.addWidget(QLabel("Selected Date"))
-        self.date_label = QLabel("-")
-        side.addWidget(self.date_label)
+        cal_v.addWidget(self.calendar)
+        self.date_label = QLabel("No date selected")
+        cal_v.addWidget(self.date_label)
 
-        side.addWidget(QLabel("Tasks"))
+        # Right: Date sidebar + tasks + details
+        right_wrap = QWidget()
+        right_v = QVBoxLayout(right_wrap)
+        right_v.addWidget(QLabel("Dates with tasks (this month)"))
+        self.date_list = QListWidget()
+        right_v.addWidget(self.date_list, 1)
+        right_v.addWidget(QLabel("Tasks on selected date"))
         self.task_list = QListWidget()
-        side.addWidget(self.task_list, 1)
-
-        side.addWidget(QLabel("Details"))
+        right_v.addWidget(self.task_list, 1)
         self.details = QTextEdit()
         self.details.setReadOnly(True)
-        side.addWidget(self.details, 2)
+        right_v.addWidget(self.details, 2)
 
-        # Button to re-open setup
-        self.reconfigure_btn = QPushButton("Change Year/Classes/Excel")
-        self.reconfigure_btn.clicked.connect(lambda: self.stack.setCurrentWidget(self.setup_page))
-        side.addWidget(self.reconfigure_btn)
-
-        root.addWidget(side_wrap, 2)
+        self.inner_split.addWidget(cal_wrap)
+        self.inner_split.addWidget(right_wrap)
+        self.inner_split.setSizes([800, 400])
 
         # Signals
-        self.calendar.selectionChanged.connect(self.refresh_day)
-        self.task_list.itemSelectionChanged.connect(self.show_task_details)
+        self.btn_toggle_setup.clicked.connect(self.toggle_setup_panel)
+        self.calendar.selectionChanged.connect(self.on_calendar_selected)
+        self.calendar.currentPageChanged.connect(self.populate_date_sidebar)
+        self.date_list.itemClicked.connect(self.on_date_sidebar_clicked)
+        self.task_list.itemClicked.connect(self.show_details)
 
-    def load_data_and_show_calendar(self):
-        # ensure extraction with chosen excel
-        ok, err = ensure_extract(self.state["excel_path"], str(EXTRACTOR))
-        if not ok:
-            QMessageBox.critical(self, "Extract", err)
-            self.stack.setCurrentWidget(self.setup_page)
+    # ------------- Setup panel logic -------------
+    def toggle_setup_panel(self):
+        if self.outer_split.sizes()[0] == 0:
+            self.outer_split.setSizes([350, 850])
+        else:
+            self.outer_split.setSizes([0, 1])
+
+    def choose_file(self):
+        path, _ = QFileDialog.getOpenFileName(self, "Choose Excel", "", "Excel Files (*.xlsx *.xls)")
+        if path:
+            self.excel_path = path
+            self.file_label.setText(path)
+
+    def scan_excel(self):
+        if not self.excel_path:
+            QMessageBox.information(self, "Select file", "Choose an Excel file first.")
             return
-        # Load correct year and filter classes
-        year = int(self.state["year"])
-        ypath = DATA_DIR / ("year11.json" if year == 11 else "year12.json")
-        cols_map = Y11_COLS if year == 11 else Y12_COLS
-        self.df = read_dataset(ypath, cols_map)
-        self.df = self.df[self.df["Class"].isin(set(self.state["classes"]))].copy()
-        # Paint calendar and show
-        self.recolor_calendar()
-        self.refresh_day()
-        self.stack.setCurrentWidget(self.calendar_page)
+        run_extractor(self.excel_path)
+        year = int(self.year_box.currentText())
+        df = read_data(year)
+        if df.empty:
+            QMessageBox.information(self, "No Data", "Could not read any classes.")
+            return
+        self.class_list.clear()
+        for c in sorted(df['Class'].dropna().unique()):
+            item = QListWidgetItem(c)
+            if c in self.classes:
+                item.setSelected(True)
+            self.class_list.addItem(item)
 
-    def recolor_calendar(self):
-        default_fmt = QTextCharFormat()
-        if not hasattr(self, "_painted"):
-            self._painted = set()
-        for d in self._painted:
-            self.calendar.setDateTextFormat(d, default_fmt)
-        self._painted.clear()
+    def save_and_hide(self):
+        selected = [i.text() for i in self.class_list.selectedItems()]
+        self.classes = selected
+        self.year = int(self.year_box.currentText())
+        self.save_state()
+        self.load_data()
+        self.toggle_setup_panel()
 
-        by_date = {}
-        for _, row in self.df.iterrows():
-            by_date.setdefault(str(row["Date"]), set()).add(str(row["Class"]))
+    # ------------- Data logic -------------
+    def load_data(self):
+        run_extractor(self.excel_path)
+        df = read_data(self.year)
+        self.df = df[df['Class'].isin(self.classes)] if not df.empty else pd.DataFrame()
+        self.paint_calendar()
+        self.populate_date_sidebar()
+        self.on_calendar_selected()
 
-        for date_str, classes in by_date.items():
-            d = QDate.fromString(date_str, "yyyy-MM-dd")
-            if not d.isValid():
+    def paint_calendar(self):
+        # Clear previous colouring
+        clear_fmt = QTextCharFormat()
+        for d in getattr(self, '_painted_dates', []):
+            self.calendar.setDateTextFormat(d, clear_fmt)
+        self._painted_dates = set()
+
+        if self.df.empty:
+            return
+
+        # Choose dominant class per date (most tasks that day)
+        # Build a frequency table: (Date, Class) -> count
+        counts = self.df.groupby(['Date', 'Class']).size().reset_index(name='n')
+        # For each date, pick the class with the max count
+        for date_str, sub in counts.groupby('Date'):
+            top_row = sub.sort_values('n', ascending=False).iloc[0]
+            top_class = str(top_row['Class'])
+            color = CLASS_COLORS.get(top_class, '#888888')
+            qd = QDate.fromString(date_str, 'yyyy-MM-dd')
+            if not qd.isValid():
                 continue
-            colors = [CLASS_COLORS[c] for c in classes if c in CLASS_COLORS]
-            if not colors:
-                continue
-            color = blend_colors(colors) if len(colors) > 1 else colors[0]
             fmt = QTextCharFormat()
             fmt.setBackground(QBrush(QColor(color)))
-            if len(colors) > 1:
-                fmt.setFontWeight(QFont.Weight.Bold)
-            self.calendar.setDateTextFormat(d, fmt)
-            self._painted.add(d)
+            self.calendar.setDateTextFormat(qd, fmt)
+            self._painted_dates.add(qd)
 
-    def refresh_day(self):
-        self.details.clear()
-        self.task_list.clear()
-        date = self.calendar.selectedDate().toString("yyyy-MM-dd")
+    def populate_date_sidebar(self):
+        self.date_list.clear()
+        if self.df.empty:
+            return
+        # Compute current visible month in the calendar
+        year = self.calendar.yearShown()
+        month = self.calendar.monthShown()
+        # All dates in that month which have at least one task
+        mask = self.df['Date'].str.slice(0, 7) == f"{year:04d}-{month:02d}"
+        dates_in_month = sorted(self.df.loc[mask, 'Date'].unique())
+        for d in dates_in_month:
+            item = QListWidgetItem(d)
+            self.date_list.addItem(item)
+        # Try to select current date in the list
+        cur = self.calendar.selectedDate().toString('yyyy-MM-dd')
+        matches = self.date_list.findItems(cur, Qt.MatchFlag.MatchExactly)
+        if matches:
+            self.date_list.setCurrentItem(matches[0])
+
+    def on_date_sidebar_clicked(self, item: QListWidgetItem):
+        # Sync selection back to calendar
+        date_str = item.text()
+        qd = QDate.fromString(date_str, 'yyyy-MM-dd')
+        if qd.isValid():
+            self.calendar.setSelectedDate(qd)
+            self.on_calendar_selected()
+
+    def on_calendar_selected(self):
+        if self.df.empty:
+            return
+        date = self.calendar.selectedDate().toString('yyyy-MM-dd')
         self.date_label.setText(date)
-        if not hasattr(self, "df") or self.df is None or self.df.empty:
-            return
-        day_df = self.df[self.df["Date"] == date].sort_values(["Class", "Task"])
-        for _, row in day_df.iterrows():
-            label = f"{row['Class']} — {row['Task']}"
-            item = QListWidgetItem(label)
-            col = CLASS_COLORS.get(row["Class"])
-            if col:
-                item.setBackground(QColor(col))
-            item.setData(Qt.ItemDataRole.UserRole, {
-                "Class": row["Class"],
-                "Task": row["Task"],
-                "Type": row["Type"],
-                "Weighting": row["Weighting"],
-                "Events": row["Events"],
-                "Notes": row["Notes"],
-                "Date": row["Date"]
-            })
+        # Keep sidebar selection in sync
+        matches = self.date_list.findItems(date, Qt.MatchFlag.MatchExactly)
+        if matches:
+            self.date_list.setCurrentItem(matches[0])
+        # Fill tasks
+        day = self.df[self.df['Date'] == date].copy()
+        day = day.sort_values(['Class', 'Task'])
+        self.task_list.clear()
+        for _, r in day.iterrows():
+            item = QListWidgetItem(f"{r['Class']} — {r['Task']}")
+            item.setData(Qt.ItemDataRole.UserRole, r.to_dict())
+            # Color task item with its class colour
+            col = CLASS_COLORS.get(str(r['Class']), '#eeeeee')
+            item.setBackground(QBrush(QColor(col)))
             self.task_list.addItem(item)
-        if self.task_list.count() > 0:
-            self.task_list.setCurrentRow(0)
-            self.show_task_details()
-
-    def show_task_details(self):
-        item = self.task_list.currentItem()
-        if not item:
+        # Auto-show first task's details
+        first = self.task_list.item(0)
+        if first:
+            self.task_list.setCurrentItem(first)
+            self.show_details(first)
+        else:
             self.details.clear()
-            return
-        d = item.data(Qt.ItemDataRole.UserRole)
-        text = (
-            f"<b>{d['Class']}</b><br>"
-            f"<b>Task:</b> {d['Task']}<br>"
-            f"<b>Type:</b> {d['Type']}<br>"
-            f"<b>Weighting:</b> {d['Weighting']}<br>"
-            f"<b>Date:</b> {d['Date']}<br>"
-            f"<b>Events:</b> {d['Events']}<br>"
-            f"<b>Notes:</b><br>{d['Notes']}"
-        )
-        self.details.setHtml(text)
+
+    def show_details(self, item):
+        data = item.data(Qt.ItemDataRole.UserRole)
+        html = (f"<b>Class:</b> {data['Class']}<br>"
+                f"<b>Task:</b> {data['Task']}<br>"
+                f"<b>Type:</b> {data['Type']}<br>"
+                f"<b>Weighting:</b> {data['Weighting']}<br>"
+                f"<b>Notes:</b> {data['Notes']}<br>"
+                f"<b>Events:</b> {data['Events']}")
+        self.details.setHtml(html)
+
+    # ------------- Save/Load -------------
+    def save_state(self):
+        with open(STATE_PATH, 'w', encoding='utf-8') as f:
+            json.dump({'excel_path': self.excel_path, 'year': self.year, 'classes': self.classes}, f, indent=2)
+
+    def load_state(self):
+        if STATE_PATH.exists():
+            with open(STATE_PATH, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        return {}
 
 
-# /* ----- App entry point ----- */
-if __name__ == "__main__":
+if __name__ == '__main__':
     app = QApplication(sys.argv)
-    main = StudentCalendarApp()
+    w = AssessmentApp()
     sys.exit(app.exec())
