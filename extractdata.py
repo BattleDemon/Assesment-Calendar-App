@@ -19,19 +19,23 @@ def _find_header_row(raw: pd.DataFrame, max_scan: int = 20) -> int:
             return i
     return 0
 
-def fillOutFixedColdata(df: pd.DataFrame):
-
-    for col in FIXEDCOL:
-        for row in col:
-            if row != None:
-                lastVal = row
-
-            else:
-                row = lastVal
-                
-
-    print(df)
-    return df
+def fill_down(df, col):
+    if col not in df.columns:
+        return
+    cur = None
+    s = df[col]
+    for i, v in s.items():
+        # treat blanks and NaN as empty
+        if pd.isna(v):
+            empty = True
+        else:
+            txt = str(v).strip()
+            empty = (txt == "" or txt.lower() in ("nan", "nat"))
+        if empty:
+            if cur is not None and str(cur).strip() != "":
+                df.at[i, col] = cur
+        else:
+            cur = v  # new fill source until the next non-empty resets it
 
 def _require_columns(df: pd.DataFrame, cols: list[str], label: str ):
     missing = [c for c in cols if c not in df.columns]
@@ -55,15 +59,12 @@ def extract_to_json(xlsx_path: str, outdir: str = "./data"):
     hdr = _find_header_row(raw)
     df = pd.read_excel(xlsx, sheet_name="Sheet1", header=hdr, dtype=str)
 
-    for c in FIXEDCOL:
-        if c not in df.columns:
-            df[c] = df[c].ffill()
-
     _require_columns(df, FIXEDCOL, "fixed")
     _require_columns(df, Y11, "Year 11")
     _require_columns(df, Y12, "Year 12")
 
-    df = fillOutFixedColdata(df)
+    for col in FIXEDCOL:
+        fill_down(df, col)
 
     #data = _stop_at_blank_week(df)
     data11 = _checkForTempValue(df,Y11)
