@@ -45,6 +45,17 @@
   },
   {
     "Week":"1",
+    "Day":"Thur",
+    "Date":"2025-10-30",
+    "Events":null,
+    "11 - Class":"Specialist Maths",
+    "11 - Task Name":"Trigonometry Test",
+    "11 - Weighting":"0.25",
+    "11 - Task Type":"Test",
+    "11 - Other Notes":null
+  },
+  {
+    "Week":"1",
     "Day":"Fri",
     "Date":"2025-10-31",
     "Events":null,
@@ -75,5 +86,49 @@
     "11 - Weighting":"0.99",
     "11 - Task Type":"Presentation",
     "11 - Other Notes":"gewgw"
+  },
+  {
+    "Week":"3",
+    "Day":"Thur",
+    "Date":"2025-11-13",
+    "Events":null,
+    "11 - Class":"Maths Methods",
+    "11 - Task Name":"Methods Test",
+    "11 - Weighting":"0.3",
+    "11 - Task Type":"Test",
+    "11 - Other Notes":null
+  },
+  {
+    "Week":"4",
+    "Day":"Mon",
+    "Date":"2025-11-17",
+    "Events":null,
+    "11 - Class":"Physics",
+    "11 - Task Name":"POgew gwe ",
+    "11 - Weighting":"0.12",
+    "11 - Task Type":"Report",
+    "11 - Other Notes":null
+  },
+  {
+    "Week":"4",
+    "Day":"Fri",
+    "Date":"2025-11-21",
+    "Events":null,
+    "11 - Class":"Music",
+    "11 - Task Name":"Musical",
+    "11 - Weighting":"0.8",
+    "11 - Task Type":"Presentation",
+    "11 - Other Notes":null
+  },
+  {
+    "Week":"5",
+    "Day":"Thur",
+    "Date":"2025-11-27",
+    "Events":null,
+    "11 - Class":"Excersice Science",
+    "11 - Task Name":"Excersise thingo",
+    "11 - Weighting":"0.15",
+    "11 - Task Type":"Portfolio",
+    "11 - Other Notes":null
   }
 ]

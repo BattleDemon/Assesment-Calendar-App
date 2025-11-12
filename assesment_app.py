@@ -42,7 +42,7 @@ CLASS_COLORS = {
     "History": "#dc143c",
     "IT": "#03a062",
     "Human Biology": "#9fe2bf",
-    "Exercise Science": "#009e4f",
+    "Exersise Science": "#009e4f",
     "Physics": "#ffff00",
     "Design Tech": "#a52a2a",
     "Visual Arts": "#FF8C00",
@@ -71,7 +71,7 @@ APP_DIR = Path(os.path.dirname(__file__))
 DATA_DIR = APP_DIR / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 STATE_PATH = DATA_DIR / "ui_state.json"
-DEFAULT_EXTRACTOR = APP_DIR / "extractdata.py"
+EXTRACTOR = APP_DIR / "extractdata.py"
 
 
 # ----- Helpers -----
@@ -148,7 +148,7 @@ def save_state(state: dict):
 
 def auto_valid_until_date(excel_path: str, year: int) -> QDate:
     """Read the chosen year dataset and compute max(Date) + 14 days as a QDate."""
-    ok, err = ensure_extract(excel_path, str(DEFAULT_EXTRACTOR))
+    ok, err = ensure_extract(excel_path, str(EXTRACTOR))
     if not ok:
         return QDate.currentDate().addDays(14)
     ypath = DATA_DIR / ("year11.json" if year == 11 else "year12.json")
@@ -175,7 +175,7 @@ class StudentCalendarApp(QMainWindow):
 
         self.state = load_state()
         self.excel_path = self.state.get("excel_path", "")
-        self.extractor_path = str(DEFAULT_EXTRACTOR)
+        self.extractor_path = str(EXTRACTOR)
 
         # Pages
         self.stack = QStackedWidget()
@@ -409,7 +409,7 @@ class StudentCalendarApp(QMainWindow):
 
     def load_data_and_show_calendar(self):
         # ensure extraction with chosen excel
-        ok, err = ensure_extract(self.state["excel_path"], str(DEFAULT_EXTRACTOR))
+        ok, err = ensure_extract(self.state["excel_path"], str(EXTRACTOR))
         if not ok:
             QMessageBox.critical(self, "Extract", err)
             self.stack.setCurrentWidget(self.setup_page)
