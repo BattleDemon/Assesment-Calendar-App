@@ -35,6 +35,8 @@ from pathlib import Path
 DATA_DIR =  Path("data")
 SETTINGS_DIR = Path("settings")
 
+COLOR_FILE = SETTINGS_DIR / "classColor.json"
+
 from extractdata import extract_to_json
 
 extract_to_json(xlsx_path="Test Senior Assessment Calendar (6).xlsx", outdir=DATA_DIR)
@@ -43,6 +45,26 @@ extract_to_json(xlsx_path="Test Senior Assessment Calendar (6).xlsx", outdir=DAT
 '''
 COOLEST PROJECT EVER. *EXPLOSION SFX*
 '''
+
+
+def load_class_colors():
+    with open(COLOR_FILE, "r", encoding="utf-8") as f:
+        COLORS = json.load(f)
+    return COLORS
+
+def qcolor_from_hex(hx):
+    if not isinstance(hx, str):
+        return None
+    s = hx.strip()
+    if not s.startswith("#"):
+        s = "#" + s
+    # fix accidental 7-digit hex like "#03a062D" by trimming
+    if len(s) == 8:
+        s = s[:7]
+    if len(s) == 7:
+        return QColor(s)
+    
+
 
 class EntryPage():
     pass
@@ -64,6 +86,8 @@ class CalendarApp(QMainWindow):
         main_layout.addWidget(self.stacked, 3)
 
         self.show()
+
+        self.class_colors = load_class_colors()
         
 
         # Calendar page setup
@@ -86,6 +110,8 @@ class CalendarApp(QMainWindow):
 
         self.filterReleventData()
 
+        self.paint_calendar()
+
     def filterReleventData(self):
 
         # Load user Data and store what classes the user does
@@ -96,9 +122,44 @@ class CalendarApp(QMainWindow):
             self.userclasses = data["classes"]
             self.year = data["user"]["year"]
 
+    def class_colour_for_date(self, items_for_date):
+        # look at all classes on this date that match the student's class list
+        matches = []
+        for r in items_for_date:
+            c = r.get("Class", "")
+            if c in self.user_classes:
+                matches.append(c)
 
-    def ColorAssesmentTasks(self):
-        pass
+        if not matches:
+            return QColor(180, 180, 180)   # grey if no match
+
+        # pick whichever class appears most
+        best = max(set(matches), key=matches.count)
+        qc = qcolor_from_hex(self.class_colors.get(best))
+        if qc:
+            return qc
+
+        # fallback colour if missing from file
+        n = len(items_for_date)
+        if n == 1:
+            return QColor(60, 170, 90)
+        elif n == 2:
+            return QColor(200, 120, 50)
+        else:
+            return QColor(200, 60, 60)
+
+
+    def paint_calendar(self):
+        for d, items in self.by_date.items():
+            try:
+                y, m, dd = [int(x) for x in d.split("-")]
+                qd = QDate(y, m, dd)
+            except:
+                continue
+            col = self.class_colour_for_date(items)
+            fmt = QTextCharFormat()
+            fmt.setBackground(QBrush(col))
+            self.calendar.setDateTextFormat(qd, fmt)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
