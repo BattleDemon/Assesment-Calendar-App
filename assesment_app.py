@@ -28,19 +28,8 @@ import sys
 import importlib.util
 from pathlib import Path
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 
-# /* ----- Fixed Student + Class Config (in-app) ----- */
-STUDENT = {
-    "year": 11,                 # 11 or 12
-    "classes": [
-        "IT",
-        "History",
-        "Specialist Maths",
-        "Maths Methods",
-        "English"
-    ]
-}
 
 CLASS_COLORS = {
     "English": "#80002f",
@@ -157,6 +146,26 @@ def save_state(state: dict):
         json.dump(state, f, indent=2)
 
 
+def auto_valid_until_date(excel_path: str, year: int) -> QDate:
+    """Read the chosen year dataset and compute max(Date) + 14 days as a QDate."""
+    ok, err = ensure_extract(excel_path, str(DEFAULT_EXTRACTOR))
+    if not ok:
+        return QDate.currentDate().addDays(14)
+    ypath = DATA_DIR / ("year11.json" if year == 11 else "year12.json")
+    cols = Y11_COLS if year == 11 else Y12_COLS
+    try:
+        df = read_dataset(ypath, cols)
+        if df.empty:
+            return QDate.currentDate().addDays(14)
+        dts = pd.to_datetime(df["Date"], errors="coerce").dropna()
+        if dts.empty:
+            return QDate.currentDate().addDays(14)
+        last = dts.max() + pd.Timedelta(days=14)
+        return QDate(last.year, last.month, last.day)
+    except Exception:
+        return QDate.currentDate().addDays(14)
+
+
 # /* ----- Main App Class ----- */
 class StudentCalendarApp(QMainWindow):
     def __init__(self):
@@ -200,6 +209,10 @@ class StudentCalendarApp(QMainWindow):
         hy.addWidget(QLabel("Year"))
         self.year_box = QComboBox()
         self.year_box.addItems(["11", "12"])
+        # if saved year exists, set it
+        if self.state.get("year"):
+            self.year_box.setCurrentText(str(self.state["year"]))
+        self.year_box.currentTextChanged.connect(self.on_year_changed_recalc_validuntil)
         hy.addWidget(self.year_box)
         v.addWidget(row_year)
 
@@ -218,8 +231,15 @@ class StudentCalendarApp(QMainWindow):
         hv.addWidget(QLabel("Valid until"))
         self.valid_until = QDateEdit()
         self.valid_until.setCalendarPopup(True)
-        # default +90 days
-        self.valid_until.setDate(QDate.currentDate().addDays(90))
+        # If we have saved state and it's valid, use it; else will be computed after scan/choose
+        if self.state.get("valid_until"):
+            try:
+                dt = datetime.strptime(self.state["valid_until"], "%Y-%m-%d")
+                self.valid_until.setDate(QDate(dt.year, dt.month, dt.day))
+            except Exception:
+                self.valid_until.setDate(QDate.currentDate().addDays(14))
+        else:
+            self.valid_until.setDate(QDate.currentDate().addDays(14))
         hv.addWidget(self.valid_until)
         v.addWidget(row_valid)
 
@@ -243,11 +263,25 @@ class StudentCalendarApp(QMainWindow):
 
         v.addItem(QSpacerItem(0,0, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding))
 
+        # If we already have an excel + year and classes, pre-populate list
+        if self.excel_path and self.state.get("year"):
+            self.populate_classes_from_state()
+
     def choose_excel(self):
         fn, _ = QFileDialog.getOpenFileName(self, "Choose Excel", str(APP_DIR))
         if fn:
             self.excel_path = fn
             self.excel_label.setText(fn)
+            # auto recompute valid-until immediately
+            year = int(self.year_box.currentText())
+            vu = auto_valid_until_date(self.excel_path, year)
+            self.valid_until.setDate(vu)
+
+    def on_year_changed_recalc_validuntil(self):
+        if self.excel_path:
+            year = int(self.year_box.currentText())
+            vu = auto_valid_until_date(self.excel_path, year)
+            self.valid_until.setDate(vu)
 
     def scan_classes(self):
         if not self.excel_path:
@@ -270,8 +304,30 @@ class StudentCalendarApp(QMainWindow):
         classes = sorted(c for c in df["Class"].dropna().unique() if str(c).strip())
         for c in classes:
             item = QListWidgetItem(str(c))
-            # preselect if color exists for the class name (optional)
             if c in CLASS_COLORS:
+                item.setSelected(True)
+            self.class_list.addItem(item)
+        # after scanning, compute valid until = last date + 14 days
+        vu = auto_valid_until_date(self.excel_path, year)
+        self.valid_until.setDate(vu)
+
+    def populate_classes_from_state(self):
+        """If state valid, populate classes list and selection based on saved classes."""
+        year = int(self.state.get("year"))
+        ok, err = ensure_extract(self.excel_path, self.extractor_path)
+        if not ok:
+            return
+        ypath = DATA_DIR / ("year11.json" if year == 11 else "year12.json")
+        cols_map = Y11_COLS if year == 11 else Y12_COLS
+        try:
+            df = read_dataset(ypath, cols_map)
+        except Exception:
+            return
+        classes = sorted(c for c in df["Class"].dropna().unique() if str(c).strip())
+        self.class_list.clear()
+        for c in classes:
+            item = QListWidgetItem(str(c))
+            if c in self.state.get("classes", []):
                 item.setSelected(True)
             self.class_list.addItem(item)
 
@@ -284,7 +340,11 @@ class StudentCalendarApp(QMainWindow):
             QMessageBox.information(self, "Setup", "Please select at least one class.")
             return
         year = int(self.year_box.currentText())
-        vu = self.valid_until.date().toString("yyyy-MM-dd")
+        # always recalc valid-until from data at save time to keep it in sync
+        vu_qdate = auto_valid_until_date(self.excel_path, year)
+        self.valid_until.setDate(vu_qdate)
+        vu = vu_qdate.toString("yyyy-MM-dd")
+
         self.state = {
             "year": year,
             "classes": sel,
@@ -349,7 +409,7 @@ class StudentCalendarApp(QMainWindow):
 
     def load_data_and_show_calendar(self):
         # ensure extraction with chosen excel
-        ok, err = ensure_extract(self.state["excel_path"], self.extractor_path)
+        ok, err = ensure_extract(self.state["excel_path"], str(DEFAULT_EXTRACTOR))
         if not ok:
             QMessageBox.critical(self, "Extract", err)
             self.stack.setCurrentWidget(self.setup_page)
