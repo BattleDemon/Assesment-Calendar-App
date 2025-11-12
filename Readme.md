@@ -99,7 +99,3 @@ Provide consistant naming for assesments and a standard layout for the data.
 ### What Issues did I Encounter
 
 ### What have I Learnt
-
-s
-
-
