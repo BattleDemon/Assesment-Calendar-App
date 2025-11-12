@@ -11,7 +11,6 @@ import pandas as pd
 APP_DIR = Path(".")
 DATA_DIR = APP_DIR / "data"
 
-# Simple palette. You can grow this later.
 CLASS_COLORS = {
     "English": "#80002f",
     "Chemistry": "#00800f",
@@ -52,7 +51,6 @@ def read_year_json(path: Path, cols_map: dict) -> pd.DataFrame:
         return pd.DataFrame(columns=[])
     df = pd.read_json(path)
     keep = FIXED + list(cols_map.values())
-    # add any missing columns so selection does not crash
     for col in keep:
         if col not in df.columns:
             df[col] = ""
@@ -67,7 +65,6 @@ def read_year_json(path: Path, cols_map: dict) -> pd.DataFrame:
         },
         inplace=True,
     )
-    # normalize date strings
     df["Date"] = pd.to_datetime(df["Date"], errors="coerce").dt.strftime("%Y-%m-%d")
     return df
 
@@ -77,7 +74,6 @@ class StudentCalendarApp(QMainWindow):
         self.setWindowTitle("Senior Assessment — Calendar")
         self.setGeometry(200, 120, 1024, 640)
 
-        # UI
         page = QWidget()
         layout = QVBoxLayout(page)
         layout.addWidget(QLabel("Calendar"))
@@ -86,7 +82,6 @@ class StudentCalendarApp(QMainWindow):
         layout.addWidget(self.calendar)
         self.setCentralWidget(page)
 
-        # Data
         self.df = self.load_data()
         if self.df is None or self.df.empty:
             QMessageBox.information(self, "Data", "No assessment data found in data/year11.json or data/year12.json.")
@@ -103,21 +98,16 @@ class StudentCalendarApp(QMainWindow):
         if df11.empty and df12.empty:
             return pd.DataFrame()
         df = pd.concat([df11, df12], ignore_index=True)
-        # keep only rows with valid date
         df = df[pd.to_datetime(df["Date"], errors="coerce").notna()].copy()
         return df
 
-    # simple coloring: pick the first class color for the date
     def paint_calendar_simple(self):
-        # clear previous formats
         default_fmt = QTextCharFormat()
-        # make a set to wipe old formats if needed in future refreshes
         self._painted = getattr(self, "_painted", set())
         for d in self._painted:
             self.calendar.setDateTextFormat(d, default_fmt)
         self._painted.clear()
 
-        # group classes by date
         by_date = {}
         for _, row in self.df.iterrows():
             date_str = str(row["Date"])
@@ -127,7 +117,6 @@ class StudentCalendarApp(QMainWindow):
             d = QDate.fromString(date_str, "yyyy-MM-dd")
             if not d.isValid():
                 continue
-            # choose a color using the first class present on that day
             chosen_class = classes[0] if classes else None
             col_hex = CLASS_COLORS.get(chosen_class, None)
             if not col_hex:
