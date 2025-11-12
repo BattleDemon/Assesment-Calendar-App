@@ -1,0 +1,22 @@
+{
+  "Dark": {
+    "window_bg": "#1f1f1f",
+    "text_color": "#eaeaea",
+    "button_bg": "#2c2c2c",
+    "button_text": "#eaeaea",
+    "highlight": "#3a86ff",
+    "pinned_highlight": "#e63946",
+    "table_header_bg": "#303030",
+    "table_grid": "#444444"
+  },
+  "Light": {
+    "window_bg": "#ffffff",
+    "text_color": "#111111",
+    "button_bg": "#f2f2f2",
+    "button_text": "#111111",
+    "highlight": "#007acc",
+    "pinned_highlight": "#cc2936",
+    "table_header_bg": "#f5f5f5",
+    "table_grid": "#d0d0d0"
+  }
+}
