@@ -44,8 +44,6 @@ Although unlikely since the small length of this term, creating a more indepth t
 
 #### Code Snippets
 
-
-
 #### Video of Functionality
 
 [![First Prototype](https://img.youtube.com/vi/0XVEEeXoc/0.jpg)](https://www.youtube.com/watch?v=i_0XVEEeXoc)
@@ -86,12 +84,12 @@ Although unlikely since the small length of this term, creating a more indepth t
 
 ### Feedback From Michael
 
-### How is the Overall Design
-
-### How far Into my Plan did I get
-
-### What changes could I make and What would I do differently
+Unfortionatly I was unable to get a direct quote from michael as I showed it to him before the end of class. But he said something along the lines of, "This is good... I like what you've done here... How does this work and could it be improved". So overall he liked the final version and I believe it solved some of the problems that were brought up in the interview.
 
 ### What Issues did I Encounter
 
+The main over arching issue was length of the term and how I managed the time. This resulting in me having to do the majority of this documentation on the day of submission instead of my usual time frame, of only polishing the documentation on the final day. Along with documentation these time constrants also effected the actual development of the app, with me completing the majority of it over this last week.
+
 ### What have I Learnt
+
+As I said above with this reduced time frame compared to the usual IT assignemnt I struggled to complete most of my plans in time only managing to scrape it in last minute. This lead me to learn that in these short terms where we only have a few weeks to do everything, it is very important to begin early and continue consistently until it is finished.
