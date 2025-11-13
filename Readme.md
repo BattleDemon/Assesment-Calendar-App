@@ -42,17 +42,17 @@ Although unlikely since the small length of this term, creating a more indepth t
 
 ### Prototype 1: Extract Data and display Calendar
 
-#### Code Snippets
-
 #### Video of Functionality
 
 [![First Prototype](https://img.youtube.com/vi/0XVEEeXoc/0.jpg)](https://www.youtube.com/watch?v=i_0XVEEeXoc)
 
 #### Issues
 
-### Prototype 2: Display Class Color
+One of the main issues in this section, came when I was testing what happened when the excel sheet has been shifted over a column or two since it occured to me that that might be a common error if for anyreason a note or something similar had to be put to the side of the data. I solved this with my "find_header_row" function in extractdata.py, which checks for the header row within a range of other rows. 
 
-#### Code Snippets
+Another issue was the excel since I had merged cells to make it more astetically appeasing didn't recognise those cells with the following the first one as having that value, so I created a "fill_down" that filled out the values below the first one to reflect it until it encountered the next full one.
+
+### Prototype 2: Display Class Color
 
 #### Video of Functionality
 
@@ -60,9 +60,9 @@ Although unlikely since the small length of this term, creating a more indepth t
 
 #### Issues
 
-### Prototype 3: Side bar view
+An issue which I ended up solving, was the issue of having multiple assesments from multiple diffirent classes on the same day. My original plan was to have it merge/blend the colors but this involved first seperating the hexcodes into rgb then finding the average value and turning that back into hexcodes, which I attempted to do for a while but eventually ended up giving up and resolving this issue by just having it check for what subject has the highest weighted assesment.
 
-#### Code Snippets
+### Prototype 3: Side bar view
 
 #### Video of Functionality
 
@@ -70,15 +70,17 @@ Although unlikely since the small length of this term, creating a more indepth t
 
 #### Issues
 
-### Prototype 4: Import data
 
-#### Code Snippets
+
+### Prototype 4: Import data
 
 #### Video of Functionality
 
 [![4th Prototype](https://img.youtube.com/vi/HmCbDyk119M/0.jpg)](https://www.youtube.com/watch?v=i_HmCbDyk119M)
 
 #### Issues
+
+
 
 ## Reflection
 

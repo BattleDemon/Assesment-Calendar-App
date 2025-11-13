@@ -19,6 +19,8 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtGui import QTextCharFormat, QBrush, QColor, QFont
 from PyQt6.QtCore import QDate, Qt
 
+from extractdata import extract_to_json
+
 import os
 import sys
 import json
@@ -28,7 +30,8 @@ import pandas as pd
 from datetime import datetime
 
 
-APP_DIR = Path(os.path.dirname(__file__))
+# Directories and File locations
+APP_DIR = Path(os.path.dirname(__file__)) 
 
 DATA_DIR = APP_DIR / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -36,9 +39,7 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 USER_PATH = DATA_DIR / "user.json"
 EXTRACTOR_PATH = APP_DIR / "extractdata.py"
 
-# -------------------------------
-# Display colours per class
-# -------------------------------
+# Dictionary of classes and their respective colors
 CLASS_COLORS = {
     "English": "#80002f",
     "Chemistry": "#00800f",
@@ -58,6 +59,7 @@ CLASS_COLORS = {
     "Music": "#70193d",
 }
 
+# List of year 11 specific Columns
 Y11_COLS = {
     "class": "11 - Class",
     "task": "11 - Task Name",
@@ -65,6 +67,8 @@ Y11_COLS = {
     "type": "11 - Task Type",
     "notes": "11 - Other Notes",
 }
+
+# 12 specific columns
 Y12_COLS = {
     "class": "12 - Class",
     "task": "12 - Task Name",
@@ -73,27 +77,13 @@ Y12_COLS = {
     "notes": "12 - Other Notes",
 }
 
-# FIXED_COLUMNS that exist in both years
+# universal columns
 FIXED_COLUMNS = ["Week", "Day", "Date", "Events"]
 
+# Run extractor
+def run_extractor(path: str):
 
-def run_extractor(path: str) -> bool:
-
-    if not EXTRACTOR_PATH.exists():
-        return False
-    try:
-        spec = importlib.util.spec_from_file_location("extractdata", str(EXTRACTOR_PATH))
-        mod = importlib.util.module_from_spec(spec)
-        assert spec and spec.loader  
-        spec.loader.exec_module(mod)  
-        func = getattr(mod, "extract_to_json", None)
-        if callable(func):
-            func(xlsx_path=path)
-            return True
-        return False
-    except Exception:
-        # If the extractor throws, do not crash the app. 
-        return False
+    extract_to_json(path,DATA_DIR)
 
 
 def read_data(year: int) -> pd.DataFrame:
@@ -122,33 +112,29 @@ def read_data(year: int) -> pd.DataFrame:
     })
 
     # Drop rows where Date failed to parse.
-    return out.dropna(subset=["Date"])
+    return out.dropna(subset=["Date"]) # crash if don't 
 
 
-# -------------------------------
-# Main window class
-# -------------------------------
+# Main App
 class AssessmentApp(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Assessment Calendar")
+        self.setWindowTitle("Assessment Calendar") # This is the name of the app
         self.setGeometry(200, 100, 1200, 700)
 
         # Keep a small amount of state to remember last choices across runs.
-        self.state = self.load_user()
-        self.excel_path = self.state.get("excel_path", "")
-        self.year = self.state.get("year", 11)
-        self.classes = self.state.get("classes", [])
+        self.user = self.load_user()
+        self.excel_path = self.user.get("excel_path", "")
+        self.year = self.user.get("year", 11)
+        self.classes = self.user.get("classes", [])
 
         # DataFrame holding all filtered rows for the chosen year and classes.
         self.df = pd.DataFrame()
 
-        # Build the outer structure: a horizontal splitter for a slide-in setup panel.
         self.outer_split = QSplitter(Qt.Orientation.Horizontal)
         self.setCentralWidget(self.outer_split)
 
-        # Create child panels.
         self.build_setup_panel()
         self.build_main_area()
 
@@ -157,7 +143,7 @@ class AssessmentApp(QMainWindow):
         self.outer_split.addWidget(self.main_area)
         self.outer_split.setSizes([0, 1])
 
-        # Show window now. If we have saved state, try to load data immediately.
+        # Show window If have saved state try to load data immediately.
         self.show()
         if self.excel_path and self.classes:
             self.load_data()
@@ -207,7 +193,7 @@ class AssessmentApp(QMainWindow):
 
         # Top controls row with a simple toggle for the setup panel.
         top = QHBoxLayout()
-        self.btn_toggle_setup = QPushButton("☰ Setup")
+        self.btn_toggle_setup = QPushButton("Setup")
         top.addWidget(self.btn_toggle_setup)
         top.addStretch()  # keep the button on the left
         main_v.addLayout(top)
