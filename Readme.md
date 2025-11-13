@@ -80,6 +80,8 @@ An issue which I ended up solving, was the issue of having multiple assesments f
 
 #### Issues
 
+Although this was an easy fix it made it much more usable and readable. When I would scan for classes it would include all occurences of them in the excel sheet, which would allow the user to select multiple of the same classes. I fixed this by checking if they were unique. 
+
 
 
 ## Reflection
