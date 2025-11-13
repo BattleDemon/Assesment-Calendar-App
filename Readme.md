@@ -70,7 +70,7 @@ An issue which I ended up solving, was the issue of having multiple assesments f
 
 #### Issues
 
-
+This 
 
 ### Prototype 4: Import data
 
@@ -80,7 +80,9 @@ An issue which I ended up solving, was the issue of having multiple assesments f
 
 #### Issues
 
-Although this was an easy fix it made it much more usable and readable. When I would scan for classes it would include all occurences of them in the excel sheet, which would allow the user to select multiple of the same classes. I fixed this by checking if they were unique. 
+Although this was an easy fix it made it much more usable and readable. When I would scan for classes it would include all occurences of them in the excel sheet, which would allow the user to select multiple of the same classes. I fixed this by checking if they were unique.
+
+Another issue was the side panel would open over the existing calendar, resulting in a clunky user experience, this was then changed to the final working version, but involved me having to redo how I was opening it. Instead of the original stacked widget design which opened on the calendar I now expand the size of the outer panel.
 
 ## Reflection
 
