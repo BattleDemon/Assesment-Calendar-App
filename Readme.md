@@ -20,28 +20,6 @@ A system that makes entering and viewing assessments simpler for everyone. Teach
 
 ## Preplanning
 
-### Define the Problems
-
-#### Inconsistent Naming and Input
-
-A consistent format or guideline for the excel sheet has not been established and thus the data been inputed is often all over the place and hard to read. Along with that some teacher input a large amount of data while others just the name of the assignemnt, creating a confusing experience.
-
-#### Clunky and Redundant Systems
-
-
-
-#### No Communication or Alerts
-
-
-
-#### Assessment Clashes
-
-Currently teachers can input an unlimited number of assignments on each day, which when it comes to subjects with very little to no overlap can be completly fine, but if many classes are shared this creates a very stressful time for students.
-
-#### Poor Usability
-
-
-
 ### What problems will I solve
 
 #### Teacher Data Entry
@@ -58,29 +36,49 @@ Provide consistant naming for assesments and a standard layout for the data.
 
 ### If I have more time
 
+Although unlikely since the small length of this term, creating a more indepth teacher side that works with a server to check for overlapping assesment dates, would be my dream if i have more time goal.
+
 ## Development
 
 ### Prototype 1: Extract Data and display Calendar
 
 #### Code Snippets
 
+
+
 #### Video of Functionality
+
+[![First Prototype](https://img.youtube.com/vi/0XVEEeXoc/0.jpg)](https://www.youtube.com/watch?v=i_0XVEEeXoc)
 
 #### Issues
 
-### Prototype 2: Display Class Color and Add side bar inspection
+### Prototype 2: Display Class Color
 
 #### Code Snippets
 
 #### Video of Functionality
 
+[![2nd Prototype](https://img.youtube.com/vi/VriVXap3Zhc/0.jpg)](https://www.youtube.com/watch?v=i_VriVXap3Zhc)
+
 #### Issues
 
-### Prototype 3: Add the Import data
+### Prototype 3: Side bar view
 
 #### Code Snippets
 
 #### Video of Functionality
+
+[![3rd Prototype](https://img.youtube.com/vi/dP_SjNt3R-4/0.jpg)](https://www.youtube.com/watch?v=i_dP_SjNt3R-4)
+
+#### Issues
+
+### Prototype 4: Import data
+
+#### Code Snippets
+
+#### Video of Functionality
+
+[![4th Prototype](https://img.youtube.com/vi/HmCbDyk119M/0.jpg)](https://www.youtube.com/watch?v=i_HmCbDyk119M)
 
 #### Issues
 
