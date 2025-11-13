@@ -27,18 +27,13 @@ import importlib.util
 import pandas as pd
 from datetime import datetime
 
-# -------------------------------
-# File system locations and state
-# -------------------------------
-# APP_DIR is the folder that contains this Python file.
+
 APP_DIR = Path(os.path.dirname(__file__))
-# DATA_DIR stores generated JSON files and user state.
+
 DATA_DIR = APP_DIR / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-# USER_PATH stores lightweight UI settings such as last Excel path, chosen year, and classes.
 USER_PATH = DATA_DIR / "user.json"
-# EXTRACTOR_PATH is the helper script which converts the Excel workbook into JSON files.
 EXTRACTOR_PATH = APP_DIR / "extractdata.py"
 
 # -------------------------------
@@ -63,10 +58,6 @@ CLASS_COLORS = {
     "Music": "#70193d",
 }
 
-# -------------------------------
-# Columns
-# -------------------------------
-
 Y11_COLS = {
     "class": "11 - Class",
     "task": "11 - Task Name",
@@ -87,7 +78,6 @@ FIXED_COLUMNS = ["Week", "Day", "Date", "Events"]
 
 
 def run_extractor(path: str) -> bool:
-    """Run extract_to_json from extractdata.py"""
 
     if not EXTRACTOR_PATH.exists():
         return False
@@ -139,20 +129,6 @@ def read_data(year: int) -> pd.DataFrame:
 # Main window class
 # -------------------------------
 class AssessmentApp(QMainWindow):
-    """Main application window.
-
-    Layout overview
-      Outer QSplitter: [Setup panel] | [Main area]
-      Main area contains a second splitter:
-        Left side: Calendar and a label that shows the currently selected date
-        Right side: Date sidebar with two lists and a details panel
-
-    User flow
-      1. Click the Setup button to select the Excel file, year, and classes
-      2. Save and close the setup panel
-      3. Calendar colours update based on the dominant class per date
-      4. Use the date sidebar to jump across busy dates in the current month
-    """
 
     def __init__(self):
         super().__init__()
@@ -186,12 +162,9 @@ class AssessmentApp(QMainWindow):
         if self.excel_path and self.classes:
             self.load_data()
 
-    # ---------------- UI building helpers ----------------
+    # ---------------- UI building
     def build_setup_panel(self):
-        """Create the slide-in setup panel on the left.
 
-        Contains: file picker, year selector, class checklist, and a save button.
-        """
         self.setup_panel = QWidget()
         layout = QVBoxLayout(self.setup_panel)
 
@@ -229,11 +202,6 @@ class AssessmentApp(QMainWindow):
         self.btn_save.clicked.connect(self.save_and_hide)
 
     def build_main_area(self):
-        """Create the right-hand main area.
-
-        Top row contains a button to toggle the setup panel.
-        Below that an inner splitter divides the calendar and the date sidebar.
-        """
         self.main_area = QWidget()
         main_v = QVBoxLayout(self.main_area)
 
@@ -285,24 +253,18 @@ class AssessmentApp(QMainWindow):
 
     # ---------------- Setup panel actions ----------------
     def toggle_setup_panel(self):
-        """Show or hide the setup panel by resizing the outer splitter.
-
-        If the left side is zero width, open it to 350 px. Otherwise collapse it.
-        """
         if self.outer_split.sizes()[0] == 0:
             self.outer_split.setSizes([350, 850])
         else:
             self.outer_split.setSizes([0, 1])
 
     def choose_file(self):
-        """Open a file picker to choose the Excel workbook."""
         path, _ = QFileDialog.getOpenFileName(self, "Choose Excel", "", "Excel Files (*.xlsx *.xls)")
         if path:
             self.excel_path = path
             self.file_label.setText(path)
 
     def scan_excel(self):
-        """Run the extractor and fill the class checklist based on the selected year."""
         if not self.excel_path:
             QMessageBox.information(self, "Select file", "Choose an Excel file first.")
             return
@@ -321,7 +283,6 @@ class AssessmentApp(QMainWindow):
             self.class_list.addItem(item)
 
     def save_and_hide(self):
-        """Save year and class choices, load data, then hide the setup panel."""
         selected = [i.text() for i in self.class_list.selectedItems()]
         self.classes = selected
         self.year = int(self.year_box.currentText())
@@ -331,7 +292,6 @@ class AssessmentApp(QMainWindow):
 
     # ---------------- Data loading and view updates ----------------
     def load_data(self):
-        """Run the extractor, read the JSON for the chosen year, filter by classes, then refresh views."""
         run_extractor(self.excel_path)
         df = read_data(self.year)
         if df.empty:
@@ -344,11 +304,6 @@ class AssessmentApp(QMainWindow):
         self.on_calendar_selected()
 
     def paint_calendar(self):
-        """Colour each date in the calendar using the dominant class for that date.
-
-        Dominant class is defined as the class with the highest number of tasks on that date.
-        The chosen colour comes from CLASS_COLORS. Unknown classes fall back to a neutral grey.
-        """
         # Clear any previous formatting.
         clear_fmt = QTextCharFormat()
         for d in getattr(self, "_painted_dates", []):
@@ -375,7 +330,6 @@ class AssessmentApp(QMainWindow):
             self._painted_dates.add(qd)
 
     def populate_date_sidebar(self):
-        """Fill the date sidebar with all dates in the visible month that have tasks."""
         self.date_list.clear()
         if self.df.empty:
             return
@@ -394,7 +348,6 @@ class AssessmentApp(QMainWindow):
             self.date_list.setCurrentItem(matches[0])
 
     def on_date_sidebar_clicked(self, item: QListWidgetItem):
-        """When the user clicks a date in the sidebar, select that date in the calendar."""
         date_str = item.text()
         qd = QDate.fromString(date_str, "yyyy-MM-dd")
         if qd.isValid():
@@ -402,7 +355,6 @@ class AssessmentApp(QMainWindow):
             self.on_calendar_selected()
 
     def on_calendar_selected(self):
-        """When a calendar date is selected, update the label and list the tasks for that date."""
         if self.df.empty:
             self.date_label.setText("No date selected")
             self.task_list.clear()
@@ -439,7 +391,6 @@ class AssessmentApp(QMainWindow):
             self.details.clear()
 
     def show_details(self, item: QListWidgetItem):
-        """Render a simple HTML view of the selected task in the details panel."""
         data = item.data(Qt.ItemDataRole.UserRole)
         html = (
             f"<b>Class:</b> {data['Class']}<br>"
@@ -451,9 +402,7 @@ class AssessmentApp(QMainWindow):
         )
         self.details.setHtml(html)
 
-    # ---------------- Persistence helpers ----------------
     def save_user(self):
-        """Write a tiny JSON file with the last used Excel path, year, and classes."""
         with open(USER_PATH, "w", encoding="utf-8") as f:
             json.dump({
                 "excel_path": self.excel_path,
@@ -471,11 +420,7 @@ class AssessmentApp(QMainWindow):
         return {}
 
 
-# -------------------------------
-# Entry point
-# -------------------------------
 if __name__ == "__main__":
-    # QApplication owns the event loop. Keep a reference in a local variable.
     app = QApplication(sys.argv)
     # Create and show the main window.
     w = AssessmentApp()

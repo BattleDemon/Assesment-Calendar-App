@@ -1,11 +1,9 @@
 {
-  "excel_path": "C:/Users/Dexter/Documents/GitHub/Assesment-Calendar-App/Test Senior Assessment Calendar.xlsx",
+  "excel_path": "C:/Users/Dexter/Documents/GitHub/Assesment-Calendar-App/Test Senior Assessment Calendar (7).xlsx",
   "year": 11,
   "classes": [
-    "Drama",
-    "Excersice Science",
-    "Maths Methods",
-    "Music",
-    "Specialist Maths"
+    "Physics",
+    "IT",
+    "Drama"
   ]
 }

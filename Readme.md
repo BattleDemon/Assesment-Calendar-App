@@ -58,8 +58,6 @@ Provide consistant naming for assesments and a standard layout for the data.
 
 ### If I have more time
 
-
-
 ## Development
 
 ### Prototype 1: Extract Data and display Calendar

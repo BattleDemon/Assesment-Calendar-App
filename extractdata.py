@@ -66,7 +66,6 @@ def extract_to_json(xlsx_path: str, outdir: str = "./data"):
     for col in FIXEDCOL:
         fill_down(df, col)
 
-    #data = _stop_at_blank_week(df)
     data11 = _checkForTempValue(df,Y11)
     data12 = _checkForTempValue(df,Y12)
 
