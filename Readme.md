@@ -70,7 +70,7 @@ An issue which I ended up solving, was the issue of having multiple assesments f
 
 #### Issues
 
-This 
+
 
 ### Prototype 4: Import data
 
